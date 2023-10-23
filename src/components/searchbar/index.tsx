@@ -1,7 +1,7 @@
 const SearchBar = ()=>{
     return(
         <div className="h-32 flex justify-center items-center sm:items-center md:items-start gap-5 px-5">
-            <div className="basis-11/12">
+            <div className="basis-10/12">
                 <div className="bg-white flex justify-between h-[63px] w-auto px-3 rounded-full">
                     <div className="basis-1/12 flex justify-center items-center">
                         <img
@@ -12,8 +12,14 @@ const SearchBar = ()=>{
                     </div>
                     <div className="basis-10/12">
                         <input
-                            placeholder="Type something intersetintg"
-                            className="w-full h-full outline-none focus:outline-none"
+                            id="user_input"
+                            placeholder="Type something interesting"
+                            className="w-full h-full outline-none focus:outline-none large"
+                        />
+                        <input
+                            id="user_input"
+                            placeholder="Type here"
+                            className="w-full h-full outline-none focus:outline-none small"
                         />
                     </div>
                    <div className="basis-1/12 flex justify-center items-center">
@@ -25,13 +31,13 @@ const SearchBar = ()=>{
                    </div>
                 </div>
             </div>
-            {/* <div className="basis-2/12">
+            <div className="basis-1/12">
                 <div className="w-[63px] h-[63px] flex justify-center items-center rounded-full bg-mic">
                     <img
                         src="/img/icons/mic.svg"
                     />
                 </div>
-            </div> */}
+            </div>
         </div>
     )
 }
