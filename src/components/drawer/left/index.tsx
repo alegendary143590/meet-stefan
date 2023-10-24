@@ -31,7 +31,7 @@ const LeftDrawer:React.FC<DrawerProps> = ({ isLeftDrawer, setLeftDrawer  })=>{
                             </Link>
                         </div>
                        
-                        <div className=" h-5/6 overflow-y-scroll">
+                        <div className="h-5/6 overflow-y-scroll scroll-hidden px-3">
                             <h2 className="text-[#52525B] text-[15px] font-medium">Recent</h2>
                             <ul>
                                 {
@@ -50,12 +50,13 @@ const LeftDrawer:React.FC<DrawerProps> = ({ isLeftDrawer, setLeftDrawer  })=>{
                             </ul>
                         </div>
                     </div>
-                    <div className="absolute block sm:block md:hidden top-1/2 right-[-25px]">
+                    <div className="absolute block sm:block md:hidden top-1/2 right-[-25px]" style={{marginRight:"5px"}}>
                         <div 
                             onClick={()=>setLeftDrawer(!isLeftDrawer)} 
                             className="w-[50px] h-[50px] flex justify-center items-center bg-white rounded-full cursor-pointer"
                         >
                             <img
+                                style={{marginLeft:"15px"}}
                                 height={22}
                                 width={22}
                                 src="/img/icons/left-arrow.svg"
