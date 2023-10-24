@@ -41,7 +41,7 @@ const SearchBar = ()=>{
                 </div> */}
                 <div className="relative flex justify-center items-center rounded-full hover:cursor-pointer aspect-w-1 aspect-h-1">
                     <img src="/img/icons/mic.svg" className="w-[63px] h-[63px]"/>
-                    <img src="/img/union.png" alt="Union Icon" className="absolute bottom-[40px] tooltip-settig"/>
+                    <img src="/img/union.png" alt="Union Icon" className="absolute bottom-[40px] tooltip-setting mr-7"/>
                 </div>
             </div>
         </div>

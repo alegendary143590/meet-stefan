@@ -11,7 +11,7 @@
 input.large { display: inline-block; }
 input.small { display: none; }
 
-@media (max-width: 401px) { 
+@media (max-width: 768px) { 
   input.large { display: none; }
   input.small { display: inline-block; }
 }
@@ -36,6 +36,7 @@ input.small { display: none; }
   border-radius: 8px;
   border: 3px solid var(--primary);
 }
+
 @tailwind components;
 @tailwind utilities;
 
@@ -54,4 +55,10 @@ input.small { display: none; }
 
 .tro {
   font-family: 'TRPro', sans-serif;
+}
+.tooltip-setting {
+  width:"200px";
+  max-width: none;
+  margin-right:"50px";
+  background-color:"transparent";
 }
