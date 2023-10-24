@@ -9,9 +9,11 @@ interface DrawerProps {
 const RightDrawer: React.FC<DrawerProps> = ({ isRightDrawer, setRightDrawer }) => {
   return (
     <div
+      
       className={`${
         isRightDrawer ? 'translate-x-0' : 'translate-x-full'
-      } fixed top-0 right-0 w-full h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out`}
+      } fixed top-0 right-0 w-full h-full shadow-lg transform transition-transform duration-300 ease-in-out z-1000`}
+      style={{zIndex:1000}}
     >
       <div className="flex h-full">
             <div 
@@ -19,8 +21,8 @@ const RightDrawer: React.FC<DrawerProps> = ({ isRightDrawer, setRightDrawer }) =
                 className="w-3/12 min-w-fit min-h-fit bg-disable"
             >  
             </div>
-            <div className="w-9/12 min-h-full bg-white relative">
-                <div className="pt-2 pl-2 h-full overflow-y-scroll">
+            <div className="w-9/12 min-h-full bg-white relative bg-image">
+                <div className="pt-2 pl-2 h-full overflow-y-scroll overflow-hidden">
                     <div className="h-8">
                         <h3 className="text-[#52525B] text-[15px] font-bold">AI Feelings</h3>
                     </div>
