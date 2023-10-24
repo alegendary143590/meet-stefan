@@ -15,8 +15,9 @@ const LeftDrawer:React.FC<DrawerProps> = ({ isLeftDrawer, setLeftDrawer  })=>{
             className={`${
                 isLeftDrawer ? 'translate-x-0' : '-translate-x-full'
             } fixed top-0 left-0 w-full h-full shadow-lg transform transition-transform duration-300 ease-in-out`}
+            style={{zIndex:1000}}
         >
-            <div className="flex h-full">
+            <div className="flex h-full z-10">
                 <div className="w-9/12 bg-white relative">
                     <div className="h-full pt-2 pl-2">
                         <div className="h-1/6">

@@ -53,6 +53,10 @@ input.small { display: none; }
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+.bg-image {
+  background-image: url('/img/icons/right_drawer.svg');
+}
+
 .tro {
   font-family: 'TRPro', sans-serif;
 }
