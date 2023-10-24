@@ -28,3 +28,4 @@ remote.origin.url=https://github.com/Buzuev1234/meet-stefan.git
 remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
 gui.wmstate=normal
 gui.geometry=893x435+779+254 175 196
+https://www.figma.com/file/vl29zVZKzIAANz1uvpuUrt/Stefan-AI-Chat-bot?type=design&node-id=45-8699&mode=design&t=0OP8N4WIYJQYur4I-4
