@@ -1,10 +1,17 @@
+import {useState} from 'react';
 
 const SearchBar = ({onSearch})=>{
+    const [message, setMessage] = useState("");
 
     const handleInputChange = (event) =>{
         const value = event.target.value;
         // setMessage(value);
-        onSearch(value);
+        setMessage(value);
+    }
+    const handleSendMessage = (e) =>{
+        e.preventDefault();
+        onSearch(message);
+        setMessage("");
     }
     return(
         <div className="h-32 flex justify-center items-center sm:items-center md:items-start gap-5 px-5">
@@ -21,6 +28,8 @@ const SearchBar = ({onSearch})=>{
                         <input
                             id="user_input"
                             type="text"
+                            onKeyDown={e=>e.keyCode==13?handleSendMessage(e):""}
+                            value={message}
                             onChange={handleInputChange}
                             placeholder="Type something interesting"
                             className="w-full h-full outline-none focus:outline-none large"
@@ -28,17 +37,22 @@ const SearchBar = ({onSearch})=>{
                         <input
                             id="user_input"
                             type="text"
+                            onKeyDown={e=>e.keyCode==13?handleSendMessage(e):""}
+                            value={message}
                             onChange={handleInputChange}
                             placeholder="Type here"
                             className="w-full h-full outline-none focus:outline-none small"
                         />
                     </div>
                    <div className="basis-1/12 flex justify-center items-center">
-                        <img
-                            width={21}
-                            height={21}
-                            src="/img/icons/arrow.svg"
-                        />
+                        <button>
+                            <img
+                                width={21}
+                                height={21}
+                                src="/img/icons/arrow.svg"
+                            />
+                        </button>
+                        
                    </div>
                 </div>
             </div>
