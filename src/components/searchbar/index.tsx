@@ -1,4 +1,11 @@
-const SearchBar = ()=>{
+
+const SearchBar = ({onSearch})=>{
+
+    const handleInputChange = (event) =>{
+        const value = event.target.value;
+        // setMessage(value);
+        onSearch(value);
+    }
     return(
         <div className="h-32 flex justify-center items-center sm:items-center md:items-start gap-5 px-5">
             <div className="basis-10/12">
@@ -13,11 +20,15 @@ const SearchBar = ()=>{
                     <div className="basis-10/12">
                         <input
                             id="user_input"
+                            type="text"
+                            onChange={handleInputChange}
                             placeholder="Type something interesting"
                             className="w-full h-full outline-none focus:outline-none large"
                         />
                         <input
                             id="user_input"
+                            type="text"
+                            onChange={handleInputChange}
                             placeholder="Type here"
                             className="w-full h-full outline-none focus:outline-none small"
                         />
@@ -32,13 +43,6 @@ const SearchBar = ()=>{
                 </div>
             </div>
             <div className="basis-2/12 min-w-63 z-1" >
-                {/* <div className="relative w-[63px] h-[63px] flex justify-center items-center rounded-full bg-mic hover:cursor-pointer">
-                    <img src="/img/icons/mic.svg" />
-                    <div className="absolute bottom-[80px] left-1/2 -translate-x-1/2 bg-white text-black px-2 py-2 rounded-full shadow-lg whitespace-nowrap tooltip-rotate">
-                        <span style={{fontSize:"14px", fontFamily:"sans-serif"}}>Say "<strong >Hi Stefan!</strong>"</span>
-                        <span className="tooltip-triangle"></span>
-                    </div>
-                </div> */}
                 <div className="relative flex justify-center items-center rounded-full hover:cursor-pointer">
                     <img src="/img/icons/mic.svg" className="w-[63px] h-[63px]"/>
                     <img src="/img/union.png" alt="Union Icon" className="absolute bottom-[40px] tooltip-setting mr-7"/>

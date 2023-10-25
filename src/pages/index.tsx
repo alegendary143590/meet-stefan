@@ -1,10 +1,12 @@
 import Layout from "../components/Layout"
 import Image from "next/image"
 import Link from "next/link"
+import { useState } from "react"
 
-const Home = ()=>{
+const Home = ()=>{ 
+  const [message, setMessage] = useState("");
     return(
-      <Layout>
+      <Layout setMessage={setMessage}>
         <div className="pt-5">
           <img
               width={450}
