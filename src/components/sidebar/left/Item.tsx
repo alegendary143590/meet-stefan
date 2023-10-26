@@ -1,8 +1,14 @@
 import Link from "next/link"
+import { useState } from "react";
 
-const Item = ()=>{
+interface ItemProps {
+    isSelected: boolean;
+    onClick: () => void;
+}
+const Item = ({isSelected, onClick})=>{
+    
     return(
-        <li className="my-4">
+        <li className={`flex items-center justify-center my-4 ${isSelected ? "bg-yellow-200" : ""} rounded-full`} onClick={onClick} style={{height:"40px"}}>
             <Link className="flex gap-2" href={"/c/dsf567"}>
                 <img
                     height={24}
