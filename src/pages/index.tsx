@@ -1,12 +1,20 @@
-import Layout from "../components/Layout"
-import Image from "next/image"
-import Link from "next/link"
-import { useState } from "react"
+import Layout from "../components/Layout";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 const Home = ()=>{ 
   const [message, setMessage] = useState("");
+  const [convIndex, setConvIndex] = useState(-1);
+
+  const router = useRouter();
+
+  const handleClick = () =>{
+    router.push("/new-chat");
+  }
     return(
-      <Layout setMessage={setMessage}>
+      <Layout setMessage={setMessage} selection = {convIndex} >
         <div className="pt-5">
           <img
               width={450}
@@ -16,7 +24,7 @@ const Home = ()=>{
             />
             <div className="block sm:block md:hidden">
               <div className="flex justify-center mt-5">
-                <Link className="bg-[#FFFFFF] py-3 px-7 rounded-full" href="/new-chat">
+                <div className="bg-[#FFFFFF] py-3 px-7 rounded-full" onClick={handleClick}>
                   <div className="flex gap-2">
                     <Image
                         height={20}
@@ -28,11 +36,12 @@ const Home = ()=>{
                         New Chat
                       </span>
                   </div>
-                </Link>
+                </div>
               </div>
             </div>
         </div>
       </Layout>
+      
     )
 }
 

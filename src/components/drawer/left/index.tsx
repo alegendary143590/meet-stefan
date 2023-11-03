@@ -1,7 +1,8 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 
 import Item from "../../sidebar/left/Item"
 import Link from "next/link"
+import { useRouter } from "next/router"
 
 interface DrawerProps {
     isLeftDrawer: boolean
@@ -9,11 +10,20 @@ interface DrawerProps {
 }
 
 const LeftDrawer:React.FC<DrawerProps> = ({ isLeftDrawer, setLeftDrawer  })=>{
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const handleIndex = (index) => {
-        setSelectedIndex(index);
-        console.log(index);
+    const [selectedIndex, setSelectedIndex] = useState(-1);
+
+    const router = useRouter();
+    const handleClick = (i) => {
+        setSelectedIndex(i);
     }
+
+    useEffect(() => {
+        if (selectedIndex>=0) {
+          console.log("item chat ?>>");
+          router.push(`/c/${selectedIndex}`);
+        } 
+      }, [selectedIndex]);
+
 
     return(
         <div
@@ -41,9 +51,9 @@ const LeftDrawer:React.FC<DrawerProps> = ({ isLeftDrawer, setLeftDrawer  })=>{
                             <h2 className="text-[#52525B] text-[15px] font-medium">Recent</h2>
                             <ul>
                                 {
-                                    [0,1,2,3,4,5,6].map((item,i)=> <Item 
-                                        isSelected={selectedIndex==item}
-                                        onClick={()=> handleIndex(item)}
+                                    [0,1,2,3,4,5].map((item, i)=> <Item
+                                        isSelected = {selectedIndex === item}
+                                        onClick={()=>handleClick(item)}
                                         key={item}
                                     />)
                                 }
@@ -52,10 +62,10 @@ const LeftDrawer:React.FC<DrawerProps> = ({ isLeftDrawer, setLeftDrawer  })=>{
                             <ul>
                                 {
                                     [7,8,9,10,11,12,13,14,15].map((item,i)=> <Item
-                                        isSelected={selectedIndex==item}
-                                        onClick={()=> handleIndex(item)}
+                                        isSelected = {selectedIndex === item}
+                                        onClick={()=>handleClick(item)}
                                         key={item}
-                                    />)
+                                        />)
                                 }
                             </ul>
                         </div>

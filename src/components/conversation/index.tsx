@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import MarkdownDisplay from "../markdown"
 
 const Conversation = ({message})=>{
-    console.log('messsage>>>>>>',message);
+    
     const markdownContent = `Essay on Electric cars that how they effect on our environment`;
     
     const [messages, setMessages] = useState([{sender: "user", text: "Essay on Electric cars that how they effect on our environment"}, {sender: "stefan", text: "Title: The Environmental Impact of Electric Cars\nIntroduction\nThe automobile industry has been undergoing a significant transformation in recent years with the emergence of electric cars. Electric vehicles (EVs) have gained popularity as a more sustainable and environmentally friendly alternative to traditional gasoline-powered vehicles."}]);
