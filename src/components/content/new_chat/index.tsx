@@ -1,23 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import Layout from "../components/Layout";
-import Topic from "../components/cards/topic";
-import { useRouter } from 'next/router';
+import Topic from '../../cards/topic';
 
-
-const NewChat = ()=>{
-  const [message, setMessage] = useState("");
-
-  const [selectedIndex, setSelectedIndex] = useState('new-chat');
-
-  const router = useRouter();
-  useEffect(() => {
-    router.push(`/c/${selectedIndex}`);
-  }, []);
-  
-  
+const NewchatContent = ()=>{
     return(
-        <Layout setMessage={setMessage}>
-          <div className="pt-5 px-3">
+        <div className="pt-5 px-3">
             <h1 className="text-[32px] sm:text-[32px] md:text-5xl font-bold">Hello again</h1>
             <p className="text-[#52525B] text-base sm:text-base md:text-xl font-normal py-4">Tell me what’s on your mind, or pick a suggestion. I have limitations and won’t always get it right, but your feedback will help me improve.</p>
             <div className="w-full sm:w-full md:w-10/12">
@@ -42,9 +28,10 @@ const NewChat = ()=>{
                 />
               </div>
             </div>
-          </div>
-        </Layout>
-    )
+        </div>
+    );
 }
+export default NewchatContent
 
-export default React.memo(NewChat)
+
+

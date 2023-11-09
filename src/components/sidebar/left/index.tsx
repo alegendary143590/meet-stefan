@@ -7,8 +7,8 @@ import { useRouter } from "next/router";
 interface LeftProps {
   selection: number;
 }
-const Left = ({selection}:LeftProps )=> {
-  const [selectedIndex, setSelectedIndex] = useState(selection);
+const Left = ()=> {
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   const items = [
     { id: 1, name: "Item 1" },

@@ -1,21 +1,24 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import MarkdownDisplay from "../markdown"
 
-const Conversation = ({message})=>{
+const Conversation = ({message, index})=>{
     
     const markdownContent = `Essay on Electric cars that how they effect on our environment`;
     
-    const [messages, setMessages] = useState([{sender: "user", text: "Essay on Electric cars that how they effect on our environment"}, {sender: "stefan", text: "Title: The Environmental Impact of Electric Cars\nIntroduction\nThe automobile industry has been undergoing a significant transformation in recent years with the emergence of electric cars. Electric vehicles (EVs) have gained popularity as a more sustainable and environmentally friendly alternative to traditional gasoline-powered vehicles."}]);
+    const [messages, setMessages] = useState(message);
     const [loading, setLoading] = useState(false);
     const messagesEndRef = useRef(null);
-    
+    useEffect(()=>{
+        setMessages(message);
+    },[message])
 
+    
     return(
-        <> 
+        <div className="pt-5 px-3"> 
             {messages.map((msg, i) => {
                 if(msg.sender==="user"){
                     return (
-                        <div className="flex mt-5">
+                        <div className="flex mt-5" key={i}>
                             <div className="w-16 mx-4">
                                 <img
                                     className="w-14 h-14 object-contain"
@@ -25,14 +28,14 @@ const Conversation = ({message})=>{
                             </div>
                             <div className="bg-white basis-11/12 p-3 rounded-lg shadow-sm">
                                 <div className="prose flex align-center className='font-sans'">
-                                    <MarkdownDisplay markdownContent={`${msg.text}`}/>
+                                    <MarkdownDisplay markdownContent={`${msg.message}`}/>
                                 </div>
                             </div>
                         </div>
                     )
-                    } else  {
+                    } else if(msg.sender==="stefan") {
                         return (
-                            <div className="flex mt-5">
+                            <div className="flex mt-5" key={i}>
                                 <div className="p-1 mr-4 ml-4">
                                     <img
                                         className="w-14 h-14 object-contain"
@@ -42,7 +45,7 @@ const Conversation = ({message})=>{
                                 </div>
                                 <div className="bg-white basis-11/12 p-3 rounded-lg shadow-sm">
                                     <div className="prose">
-                                        <MarkdownDisplay markdownContent={`${msg.text}`}/>
+                                        <MarkdownDisplay markdownContent={`${msg.message}`}/>
                                     </div>
                                     <div className="flex gap-2 pt-5">
                                         <img
@@ -75,8 +78,7 @@ const Conversation = ({message})=>{
                         )
                     }
             })}
-        </>
-        
+        </div>  
     );
 }
 export default Conversation
