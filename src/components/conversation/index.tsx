@@ -10,6 +10,7 @@ const Conversation = ({message, index})=>{
     const messagesEndRef = useRef(null);
     useEffect(()=>{
         setMessages(message);
+        console.log("Conversation>>>",message);
     },[message])
 
     

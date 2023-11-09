@@ -53,7 +53,8 @@ function init(){
   
 }
 export default async function handler(req, res){
-    const {message} = req.body;
+    const {data} = req.body;
+    console.log(data);
     
     // const blueprint = Blueprints.SAMANTHA;
 
@@ -147,7 +148,7 @@ export default async function handler(req, res){
         // res.status(200).json({message: says.value, success:true, feels: feels, decides:decides});
 
     }
-    addDialogLine(message);
+    addDialogLine(data);
 }
 
 // rl.on("line", async (line) => {
