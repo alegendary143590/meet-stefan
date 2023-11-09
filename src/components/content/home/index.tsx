@@ -1,22 +1,10 @@
-import Layout from "../components/Layout";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { createContext } from "vm";
 
 
-const Home = ()=>{ 
-  const [message, setMessage] = useState("");
-  const [selectedIndex, setSelectedIndex] = useState('init');
-
-  const router = useRouter();
-  useEffect(() => {
-    router.push(`/c/${selectedIndex}`);
-  }, []);
+const HomeContent = ()=>{
     return(
-        <Layout setMessage={setMessage}>
-          <div className="pt-5">
+        <div className="pt-5">
             <img
                 width={450}
                 height={480}
@@ -41,8 +29,6 @@ const Home = ()=>{
                 </div>
               </div>
           </div>
-        </Layout>
-    )
+    );
 }
-
-export default Home
+export default HomeContent
