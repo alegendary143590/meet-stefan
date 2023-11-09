@@ -4,10 +4,11 @@ interface ItemProps {
   title?: string
 }
 
-const Item:React.FC<ItemProps> = ({ bg })=>{
+const Item:React.FC<ItemProps> = ({ bg, title})=>{
+  const bgColors = ["bg-[#E2F1EB]", "bg-[#DAE8F3]", "bg-[#FEE7E3]"];
     return(
       <li className={`${bg} p-3 my-2 rounded-lg`}>
-        In retrospect, I feel like asking about the user's thoughts and using an emoji was a good way to show my enthusiasm and keep the conversation interesting. 🤔
+        {title} 🤔
       </li>
     )
 }

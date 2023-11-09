@@ -11,12 +11,60 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, setMessage} :LayoutProps) => {
-  const [input, setInput] = useState("");
-  const [conversationList, setConversationList] =  useState([]);
-  const handleMessage = (data:string) => {
-     const jsonData = {"sender": "user", "message":data};
+  
+  const [soulThoughts, setSoulThoughts] = useState([]);
+  const handleMessage = async (data:string) => {
+
+    //Send user message to backend api
+    const jsonData = {sender: "user", message:data};
      setMessage(jsonData);
-     console.log("Layout >>>", jsonData);
+     
+     const res = await fetch('/api/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({data}),
+     })
+     .then(response => {
+        if(!response.ok){
+          throw new Error('Bad gateway');
+        }
+        console.log(response);
+        return response;
+     })
+     .catch(error => {
+      console.error("Error:", error.message);
+     });
+    
+    // Get the res from backend and send it to display
+    let done = false;
+    let chunks = [];
+    //@ts-ignore
+    const result = await res.body.getReader();
+    console.log(result);
+    while(!done){
+      const { value, done: isDone} = await result.read();
+      const decodedValue = new TextDecoder().decode(value);
+      chunks.push(decodedValue);
+      if(chunks.length==1){
+        setSoulThoughts(preArray => [...preArray, `Stefan feels: ${decodedValue}`]);
+        console.log("Stefan feels...");
+      }
+      if(chunks.length==2){
+        setSoulThoughts(preArray => [...preArray, decodedValue]);
+        console.log("Stefan decides...");
+      }
+      if(chunks.length==3){
+        setSoulThoughts(preArray => [...preArray, `Stefan sent message: ${decodedValue}`]);
+        setMessage({sender:"stefan", message:`${decodedValue}`});
+        console.log("Stefan says...");
+
+      }
+      done = isDone;
+    }
+
+
   }
   return (
     <div className="bg-white h-screen overflow-y-hidden">
@@ -29,7 +77,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setMessage} :LayoutProps) => 
             <SearchBar onSearch={handleMessage}/>
           </div>
         </div>
-        <RightSidebar/>
+        <RightSidebar soulThoughts={soulThoughts}/>
       </div>
     </div>
   );
