@@ -5,11 +5,12 @@ import { useState } from "react";
 
 
 interface ItemProps {
+    title:string;
     isSelected: boolean;
     onClick: () => void;
 }
-const Item = ({isSelected, onClick}:ItemProps)=>{
-
+const Item = ({title, isSelected, onClick}:ItemProps)=>{
+    
     const router = useRouter();
     
     return(
@@ -21,7 +22,7 @@ const Item = ({isSelected, onClick}:ItemProps)=>{
                     src="/img/icons/message.svg"
                     alt="message icon"
                 />
-                <h5 className="text-[#52525B] text-sm font-normal"> Blog ...</h5>
+                <h5 className="text-[#52525B] text-sm font-normal"> {title}</h5>
             </div>
         </li>
     )

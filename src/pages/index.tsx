@@ -1,3 +1,4 @@
+
 import Layout from "../components/Layout";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,13 +10,25 @@ import { createContext } from "vm";
 const Home = ()=>{ 
   const [message, setMessage] = useState("");
   const [selectedIndex, setSelectedIndex] = useState('init');
+  const [chatHistory, setChatHistory] = useState([
+    { title: "Item... ", message: [{sender:"user", message:"Hi"}], isTitle:true }
+  ]);
 
-  const router = useRouter();
-  useEffect(() => {
-    router.push(`/c/${selectedIndex}`);
-  }, []);
+  if (typeof window !== 'undefined') {
+    // Perform localStorage action
+    localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+  }
+
+  console.log("Started...");
+  // const router = useRouter();
+  // useEffect(() => {
+  //   router.push({
+  //     pathname:`/c/${selectedIndex}`,
+      
+  // });
+  // }, []);
     return(
-        <Layout setMessage={setMessage}>
+        <Layout setMessage={setMessage} index={selectedIndex}>
           <div className="pt-5">
             <img
                 width={450}

@@ -6,15 +6,25 @@ import SearchBar from "./searchbar";
 
 
 interface LayoutProps {
+  index:string | string[];
   children: ReactNode;
   setMessage: (value) =>void;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, setMessage} :LayoutProps) => {
+const Layout: React.FC<LayoutProps> = ({ index, children, setMessage} :LayoutProps) => {
   
+  
+  const [itemIndex, setItemIndex] = useState(index);
   const [soulThoughts, setSoulThoughts] = useState([]);
   const handleMessage = async (data:string) => {
-
+    
+    // if (index == 'init'||index=='new-chat'){
+    //   setConversationItem(arrayItem=>
+    //     [{name:"New Conversation...", message:[], isTitle:false}, ...arrayItem]
+    //   );
+    //   index='0';  
+    //   setItemIndex(index);
+    // }
     //Send user message to backend api
     const jsonData = {sender: "user", message:data};
      setMessage(jsonData);
@@ -59,7 +69,6 @@ const Layout: React.FC<LayoutProps> = ({ children, setMessage} :LayoutProps) => 
         setSoulThoughts(preArray => [...preArray, `Stefan sent message: ${decodedValue}`]);
         setMessage({sender:"stefan", message:`${decodedValue}`});
         console.log("Stefan says...");
-
       }
       done = isDone;
     }
@@ -70,7 +79,7 @@ const Layout: React.FC<LayoutProps> = ({ children, setMessage} :LayoutProps) => 
     <div className="bg-white h-screen overflow-y-hidden">
       <Header/>
       <div className="h-[calc(100vh-4rem)] grid grid-cols-12 mx-auto px-0 sm:px-0 md:px-5">
-        <LeftSidebar />
+        <LeftSidebar selection={itemIndex}/>
         <div className="h-[calc(100vh-4rem)] col-span-12 sm:col-span-12 md:col-span-7 bg-[#FAFAFA] rounded-xl ml-0 md:ml-2">
           <div className="flex flex-col">
             <div className="h-[calc(100vh-12rem)] overflow-y-scroll">{children}</div>
