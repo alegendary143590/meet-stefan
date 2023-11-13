@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import MarkdownDisplay from "../markdown"
 
-const Conversation = ({message, index})=>{
+const Conversation = ({message})=>{
     
     const markdownContent = `Essay on Electric cars that how they effect on our environment`;
     

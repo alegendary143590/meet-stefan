@@ -45,7 +45,7 @@ const SearchBar = ({onSearch})=>{
                         />
                     </div>
                    <div className="basis-1/12 flex justify-center items-center">
-                        <button>
+                        <button onClick={handleSendMessage}>
                             <img
                                 width={21}
                                 height={21}
