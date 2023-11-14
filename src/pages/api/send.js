@@ -54,7 +54,6 @@ function init(){
 }
 export default async function handler(req, res){
     const {data} = req.body;
-    console.log(data);
     
     // const blueprint = Blueprints.SAMANTHA;
 

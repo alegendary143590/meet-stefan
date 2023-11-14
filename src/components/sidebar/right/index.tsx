@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react"
+
 import Item from "./Item"
 
 const Right = ({soulThoughts})=>{
 
   const bgColors = ["bg-[#E2F1EB]", "bg-[#DAE8F3]", "bg-[#FEE7E3]"];
   let index = 0;
-  console.log(soulThoughts);
    
     return(
       <div className="h-[calc(100vh-4rem)] col-span-3 pl-7 hidden sm:hidden md:block">

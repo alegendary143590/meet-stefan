@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Item from "./Item"
-import {useState, useEffect} from "react";
+ import {useState, useEffect} from "react";
 import { useRouter } from "next/router";
 
 
@@ -8,31 +8,25 @@ interface LeftProps {
   selection: string | string[];
 }
 const Left = ({selection}:LeftProps)=> {
-  const [selectedIndex, setSelectedIndex] = useState(selection);
-
-  let chatHistory=[]; 
+  let [selectedIndex, setSelectedIndex] = useState(selection);
+  const [chatHistory, setChatHistory] = useState([]);
   useEffect(()=>{
     if(typeof window !== 'undefined'){
-      chatHistory= JSON.parse(window.localStorage.getItem('chatHistory'));
+      setChatHistory(JSON.parse(window.localStorage.getItem('chatHistory')));
     }
-  },[])
+  },[]);
+
   const router = useRouter();
   const handleClick = (i) => {
-    setSelectedIndex(i);
-  }
-  const items = ["New","New..."];
-  useEffect(() => {
-    // if (selectedIndex>=0) {
-      console.log("item chat ?>>");
-      if((selectedIndex!=='init')&&(selectedIndex!=='new-chat'))
+    selectedIndex=i;
+    if((selectedIndex!=='init')&&(selectedIndex!=='new-chat'))
       router.push({
         pathname:`/c/${selectedIndex}`,
         query:{
           id: selectedIndex,
         }
-      });
-    // } 
-  }, [selectedIndex]);
+    });
+  }
   
 return(
         <div className="h-[calc(100vh-4rem)] col-span-2 hidden sm:hidden md:block">
