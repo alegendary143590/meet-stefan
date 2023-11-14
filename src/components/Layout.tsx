@@ -7,11 +7,12 @@ import Router, { useRouter } from "next/router";
 
 
 interface LayoutProps {
+  thoughts: string [];
   index:string | string[];
   children: ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ index, children} :LayoutProps) => {
+const Layout: React.FC<LayoutProps> = ({ index, children, thoughts} :LayoutProps) => {
   
   
   const [itemIndex, setItemIndex] = useState(index);
@@ -19,7 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ index, children} :LayoutProps) => {
   let [chatItem, setChatItem] = useState([
     { title: "Item... ", message: [{sender:"user", message:"Hi"}], isTitle:true }
   ]);
-  const [soulThoughts, setSoulThoughts] = useState([]);
+  const [soulThoughts, setSoulThoughts] = useState(thoughts);
   const router = useRouter();
 
   function addMessage(value, sender, id){
@@ -78,7 +79,7 @@ const Layout: React.FC<LayoutProps> = ({ index, children} :LayoutProps) => {
         pathname:`/c/${index}`,
         query:{
           text:data,
-        }
+    }
       });
     }
     //Send user message to backend api
@@ -135,7 +136,7 @@ const Layout: React.FC<LayoutProps> = ({ index, children} :LayoutProps) => {
     <div className="bg-white h-screen overflow-y-hidden">
       <Header/>
       <div className="h-[calc(100vh-4rem)] grid grid-cols-12 mx-auto px-0 sm:px-0 md:px-5">
-        <LeftSidebar selection={itemIndex} />
+        <LeftSidebar selection={itemIndex} setSelection ={setItemIndex}/>
         <div className="h-[calc(100vh-4rem)] col-span-12 sm:col-span-12 md:col-span-7 bg-[#FAFAFA] rounded-xl ml-0 md:ml-2">
           <div className="flex flex-col">
             <div className="h-[calc(100vh-12rem)] overflow-y-scroll">{children}</div>
