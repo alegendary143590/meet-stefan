@@ -11,7 +11,7 @@ import { createContext } from "vm";
 const Home = ()=>{ 
   const [selectedIndex, setSelectedIndex] = useState('init');
   const [chatHistory, setChatHistory] = useState([
-    { title: "Item... ", message: [{sender:"user", message:"Hi"}], isTitle:false }
+    { title: "Item... ", message: [{sender:"user", message:"Hi"}], thoughts:["Stefan gets excited a lot.", "Stefan feels bored!"] }
   ]);
 
   if (typeof window !== 'undefined') {
@@ -22,7 +22,7 @@ const Home = ()=>{
   const router = useRouter();
   
     return(
-        <Layout index={selectedIndex}>
+        <Layout index={selectedIndex} thoughts={[]}>
           <HomeContent />
         </Layout>
     )

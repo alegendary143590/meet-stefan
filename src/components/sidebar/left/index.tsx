@@ -1,13 +1,14 @@
 import Link from "next/link"
 import Item from "./Item"
- import {useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import { useRouter } from "next/router";
 
 
 interface LeftProps {
+  setSelection:(Selection:string|string[]) => void;
   selection: string | string[];
 }
-const Left = ({selection}:LeftProps)=> {
+const Left = ({selection, setSelection}:LeftProps)=> {
   let [selectedIndex, setSelectedIndex] = useState(selection);
   const [chatHistory, setChatHistory] = useState([]);
   useEffect(()=>{
@@ -18,7 +19,10 @@ const Left = ({selection}:LeftProps)=> {
 
   const router = useRouter();
   const handleClick = (i) => {
-    selectedIndex=i;
+    setSelectedIndex(i);
+  }
+
+  useEffect(()=>{
     if((selectedIndex!=='init')&&(selectedIndex!=='new-chat'))
       router.push({
         pathname:`/c/${selectedIndex}`,
@@ -26,7 +30,7 @@ const Left = ({selection}:LeftProps)=> {
           id: selectedIndex,
         }
     });
-  }
+  }, [selectedIndex]);
   
 return(
         <div className="h-[calc(100vh-4rem)] col-span-2 hidden sm:hidden md:block">

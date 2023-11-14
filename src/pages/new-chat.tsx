@@ -18,7 +18,7 @@ const NewChat = ()=>{
   
   
     return(
-        <Layout index={selectedIndex}>
+        <Layout index={selectedIndex} thoughts={[]}>
           <NewchatContent />
         </Layout>
     )
