@@ -14,15 +14,15 @@ const LeftDrawer:React.FC<DrawerProps> = ({ isLeftDrawer, setLeftDrawer  })=>{
 
     const router = useRouter();
     const handleClick = (i) => {
-        setSelectedIndex(i);
+        // setSelectedIndex(i);
     }
 
-    useEffect(() => {
-        if (selectedIndex>=0) {
-          console.log("item chat ?>>");
-          router.push(`/c/${selectedIndex}`);
-        } 
-      }, [selectedIndex]);
+    // useEffect(() => {
+    //     if (selectedIndex>=0) {
+    //       console.log("item chat ?>>");
+    //       router.push(`/c/${selectedIndex}`);
+    //     } 
+    //   }, [selectedIndex]);
 
 
     return(
@@ -51,21 +51,12 @@ const LeftDrawer:React.FC<DrawerProps> = ({ isLeftDrawer, setLeftDrawer  })=>{
                             <h2 className="text-[#52525B] text-[15px] font-medium">Recent</h2>
                             <ul>
                                 {
-                                    [0,1,2,3,4,5].map((item, i)=> <Item
+                                    [0].map((item, i)=> <Item
+                                        title="Item..."
                                         isSelected = {selectedIndex === item}
                                         onClick={()=>handleClick(item)}
                                         key={item}
                                     />)
-                                }
-                            </ul>
-                            <h2 className="text-[#52525B] text-[15px] font-medium">Last month</h2>
-                            <ul>
-                                {
-                                    [7,8,9,10,11,12,13,14,15].map((item,i)=> <Item
-                                        isSelected = {selectedIndex === item}
-                                        onClick={()=>handleClick(item)}
-                                        key={item}
-                                        />)
                                 }
                             </ul>
                         </div>

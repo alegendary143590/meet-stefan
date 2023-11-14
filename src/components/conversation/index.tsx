@@ -8,10 +8,10 @@ const Conversation = ({message})=>{
     const [messages, setMessages] = useState(message);
     const [loading, setLoading] = useState(false);
     const messagesEndRef = useRef(null);
-    useEffect(()=>{
-        setMessages(message);
-        console.log("Conversation>>>",message);
-    },[message])
+    // useEffect(()=>{
+    //     setMessages(message);
+    //     console.log("Conversation>>>",message);
+    // },[message]);
 
     
     return(

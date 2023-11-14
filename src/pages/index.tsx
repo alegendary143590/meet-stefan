@@ -3,15 +3,15 @@ import Layout from "../components/Layout";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
+import HomeContent from "../components/content/home";
 import { useRouter } from "next/router";
 import { createContext } from "vm";
 
 
 const Home = ()=>{ 
-  const [message, setMessage] = useState("");
   const [selectedIndex, setSelectedIndex] = useState('init');
   const [chatHistory, setChatHistory] = useState([
-    { title: "Item... ", message: [{sender:"user", message:"Hi"}], isTitle:true }
+    { title: "Item... ", message: [{sender:"user", message:"Hi"}], isTitle:false }
   ]);
 
   if (typeof window !== 'undefined') {
@@ -19,41 +19,11 @@ const Home = ()=>{
     localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
   }
 
-  console.log("Started...");
-  // const router = useRouter();
-  // useEffect(() => {
-  //   router.push({
-  //     pathname:`/c/${selectedIndex}`,
-      
-  // });
-  // }, []);
+  const router = useRouter();
+  
     return(
-        <Layout setMessage={setMessage} index={selectedIndex}>
-          <div className="pt-5">
-            <img
-                width={450}
-                height={480}
-                src="/img/bg.png"
-                className="mx-auto mt-7 sm:mt-7 md:mt-0"
-              />
-              <div className="block sm:block md:hidden">
-                <div className="flex justify-center mt-5">
-                  <div className="bg-[#FFFFFF] py-3 px-7 rounded-full">
-                    <div className="flex gap-2">
-                      <Image
-                          height={20}
-                          width={20}
-                          src="/img/icons/plus.svg"
-                          alt="plus icon"
-                        />
-                        <span className="text-[#52525B] text-base font-bold">
-                          New Chat
-                        </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </div>
+        <Layout index={selectedIndex}>
+          <HomeContent />
         </Layout>
     )
 }

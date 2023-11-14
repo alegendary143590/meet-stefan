@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Layout from "../../components/Layout";
 import Conversation from "../../components/conversation";
@@ -8,17 +8,19 @@ import Home from "..";
 
 const NewChat = ()=>{
 
-  const [message, setMessage] = useState([{}]);
+  let [message, setMessage] = useState();
   const router = useRouter();
   
   const  selectedIndex  = router.query._id;
+  const query = router.query.text;
+
   let all_messages:any[] = [];
   if(typeof window !== 'undefined'){
     const chatHistory = localStorage.getItem('chatHistory');
-    if(chatHistory) {
       all_messages = JSON.parse(chatHistory);
-      setMessage(all_messages);
-    }
+      const messages = (all_messages[parseInt(selectedIndex[0])].message);
+      console.log(messages);
+      message = messages;
   }
 
   let ContentComponent = Conversation;
@@ -30,17 +32,17 @@ const NewChat = ()=>{
     ContentComponent = NewchatContent;
   }
   const handleMessage = (data) => {
-    setMessage(preArray => [...preArray, data]);
-    console.log("Item >>>", message);
+    // setMessage(preArray => [...preArray, data]);
+    // console.log("Item >>>", message);
   }
 
-  console.log(selectedIndex);
+  // console.log(selectedIndex);
 
   return (
-    <Layout setMessage={handleMessage} index={selectedIndex}>
+    <Layout index={selectedIndex}>
         <ContentComponent message={message} />
     </Layout>
   )
 }
 
-export default NewChat
+export default React.memo(NewChat)
