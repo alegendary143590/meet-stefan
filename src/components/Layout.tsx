@@ -46,35 +46,40 @@ const Layout: React.FC<LayoutProps> = ({ index, children} :LayoutProps) => {
     
   }
   const updateChatHistory = (newItem) => {
-    let storedChatHistory = [];
-
-    if(typeof window!== 'undefined'){
-      const storeData = localStorage.getItem('chatHistory');
-      if(storeData){
-        storedChatHistory = JSON.stringify(storeData);
+    if(typeof window !== 'undefined'){
+      const existingArray = localStorage.getItem('chatHistory');
+      let myArray = [];
+      if(existingArray){
+        myArray = JSON.parse(existingArray);
       }
+
+      myArray.unshift(newItem);
+      localStorage.setItem('chatHistory', JSON.stringify(myArray));
+      console.log('Successfully saved!');
     }
-    // Create a copy of the current chat history array
-    const updatedChatHistory = [...chatHistory];
-
-    // Add the new item to the beginning of the array
-    updatedChatHistory.unshift(newItem);
-
-    // Update the state with the modified chat history
-    setChatItem(updatedChatHistory);
-
-    // Update local storage with the modified chat history
-    localStorage.setItem('chatHistory', JSON.stringify(updatedChatHistory));
+    
   };
   const handleMessage = async (data:string) => {
     
     if (index == 'init'||index=='new-chat'){
-      // setConversationItem(arrayItem=>
-      //   [{name:"New Conversation...", message:[], isTitle:false}, ...arrayItem]
-      // );
-      index='0';
+      index='0'; 
+     
+      const updateData = {
+        title:data.substring(0,10)+'...',
+        message:[{
+          sender:'user',
+          message:data,
+        }],
+        isTitle:true,
+      };
+      updateChatHistory(updateData);
       setItemIndex(index);
-      // addMessage(data, "user", 0);  
+      router.push({
+        pathname:`/c/${index}`,
+        query:{
+          text:data,
+        }
+      });
     }
     //Send user message to backend api
     // const jsonData = {sender: "user", message:data};

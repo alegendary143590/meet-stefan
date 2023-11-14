@@ -11,7 +11,7 @@ import { createContext } from "vm";
 const Home = ()=>{ 
   const [selectedIndex, setSelectedIndex] = useState('init');
   const [chatHistory, setChatHistory] = useState([
-    { title: "Item... ", message: [{sender:"user", message:"Hi"}], isTitle:true }
+    { title: "Item... ", message: [{sender:"user", message:"Hi"}], isTitle:false }
   ]);
 
   if (typeof window !== 'undefined') {

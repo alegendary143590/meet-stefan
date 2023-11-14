@@ -8,19 +8,19 @@ import Home from "..";
 
 const NewChat = ()=>{
 
-  let [message, setMessage] = useState([{}]);
+  let [message, setMessage] = useState();
   const router = useRouter();
   
   const  selectedIndex  = router.query._id;
   const query = router.query.text;
-  console.log(selectedIndex);
 
   let all_messages:any[] = [];
   if(typeof window !== 'undefined'){
     const chatHistory = localStorage.getItem('chatHistory');
       all_messages = JSON.parse(chatHistory);
-      message = all_messages[parseInt(selectedIndex[0])].message;
-      console.log(message);
+      const messages = (all_messages[parseInt(selectedIndex[0])].message);
+      console.log(messages);
+      message = messages;
   }
 
   let ContentComponent = Conversation;
