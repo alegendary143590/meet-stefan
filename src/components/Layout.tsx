@@ -28,14 +28,18 @@ const Layout = ({ index, children, thoughts, typeMessage }: LayoutProps) => {
 
     let storedChatHistory = [];
     if (typeof window !== 'undefined') {
+
       const storedData = localStorage.getItem('chatHistory');
+
       if (storedData) {
         storedChatHistory = JSON.parse(storedData);
       }
+
       if (storedChatHistory.length > 0) {
         const targetMessage = storedChatHistory[id].message;
         targetMessage.push({ sender: sender, message: value });
       }
+
       localStorage.setItem(('chatHistory'), JSON.stringify(storedChatHistory));
 
       router.push({
@@ -45,7 +49,6 @@ const Layout = ({ index, children, thoughts, typeMessage }: LayoutProps) => {
         }
       });
     }
-
   }
   const updateChatHistory = (newItem) => {
     if (typeof window !== 'undefined') {
@@ -73,10 +76,7 @@ const Layout = ({ index, children, thoughts, typeMessage }: LayoutProps) => {
             message: data,
           }
         ],
-        thoughts: [
-          "I think he is asking me what I can do for him.",
-          "So I will do the best as possible."
-        ],
+        thoughts: [],
         isTitle: true,
       };
       updateChatHistory(updateData);
@@ -92,54 +92,6 @@ const Layout = ({ index, children, thoughts, typeMessage }: LayoutProps) => {
     else {
       typeMessage({ sender: "user", message: data });
     }
-
-    //Send user message to backend api
-    // const jsonData = {sender: "user", message:data};
-    //  setMessage(jsonData);
-
-    //  const res = await fetch('/api/send', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({data}),
-    //  })
-    //  .then(response => {
-    //     if(!response.ok){
-    //       throw new Error('Bad gateway');
-    //     }
-    //     console.log(response);
-    //     return response;
-    //  })
-    //  .catch(error => {
-    //   console.error("Error:", error.message);
-    //  });
-
-    // // Get the res from backend and send it to display
-    // let done = false;
-    // let chunks = [];
-    // //@ts-ignore
-    // const result = await res.body.getReader();
-    // console.log(result);
-    // while(!done){
-    //   const { value, done: isDone} = await result.read();
-    //   const decodedValue = new TextDecoder().decode(value);
-    //   chunks.push(decodedValue);
-    //   if(chunks.length==1){
-    //     setSoulThoughts(preArray => [...preArray, `Stefan feels: ${decodedValue}`]);
-    //     console.log("Stefan feels...");
-    //   }
-    //   if(chunks.length==2){
-    //     setSoulThoughts(preArray => [...preArray, decodedValue]);
-    //     console.log("Stefan decides...");
-    //   }
-    //   if(chunks.length==3){
-    //     setSoulThoughts(preArray => [...preArray, `Stefan sent message: ${decodedValue}`]);
-    //     setMessage({sender:"stefan", message:`${decodedValue}`});
-    //     console.log("Stefan says...");
-    //   }
-    //   done = isDone;
-    // }
 
 
   }

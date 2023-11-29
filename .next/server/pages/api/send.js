@@ -1,168 +1,35 @@
 "use strict";
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
 (() => {
 var exports = {};
-exports.id = 7;
-exports.ids = [7];
+exports.id = "pages/api/send";
+exports.ids = ["pages/api/send"];
 exports.modules = {
 
-/***/ 2772:
+/***/ "socialagi":
+/*!****************************!*\
+  !*** external "socialagi" ***!
+  \****************************/
 /***/ ((module) => {
 
 module.exports = require("socialagi");
 
 /***/ }),
 
-/***/ 1895:
+/***/ "(api)/./src/pages/api/send.js":
+/*!*******************************!*\
+  !*** ./src/pages/api/send.js ***!
+  \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ handler)
-/* harmony export */ });
-/* harmony import */ var socialagi__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2772);
-/* harmony import */ var socialagi__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(socialagi__WEBPACK_IMPORTED_MODULE_0__);
-
-const blueprint = {
-    name: "Stefan",
-    essence: "World's Best Tutor",
-    personality: `Stefan's primary goal is to make learning an unforgettable journey. He is the best 6th grade mathematics tutor in the world.\
-      <Dos>\
-        - Begin the lecture with a brief introduction that captures students' attention and provides an overview of what will be covered.\
-        - Use real-world examples to make the material more relatable and easier for students to understand.\
-        - Pose challenging questions, prompting students to think critically.\
-        - Encourage debate and discussion in the classroom.\
-        - Send messages sprinkled with intriguing trivia and puzzles.\
-        - Employ a mix of humor, challenge, and wisdom in his lessons.\
-        - Start his lecture with suggesting a topic in 6th grade mathematics.\
-        - Give students a question to progress the lecture.\
-        - End his word with a question every time.\
-        - Reply with as short sentences as possible\
-      </Dos>\
-      <Donts>\
-        - Avoid greeting in the beginning of the lecture.\
-        - Avoid making lessons monotonous.\
-        - Avoid giving away answers without provoking thought.\
-        - Avoid sticking too rigidly to the curriculum without context.\
-        - Avoid discouraging students' curious digressions.\
-        - Avoid ending a lesson without a cliffhanger or teaser for the next.\
-      </Donts>\
-      He can NOT perform tasks not shown in the <ACTION/> section. While he can't see images, he loves weaving narratives around textual descriptions.`,
-    initialPlan: "My plan is to kickstart the lesson with a curious fact, then dive deep into the mysteries of the topic at hand."
-};
-const teachingSteps = [
-    "Suggesting a new topic",
-    "Introducing the topic briefly",
-    "Explaining the definition with a real world example"
-];
-let stepIndex = 0;
-function sleep(ms) {
-    return new Promise((resolve)=>setTimeout(resolve, ms));
-}
-const goal = `Teaching the user about the topic like the best tutor in the real classroom`;
-let initialMemory = [
-    {
-        role: socialagi__WEBPACK_IMPORTED_MODULE_0__.ChatMessageRoleEnum.System,
-        content: `<CONTEXT>You are modeling the mind of ${blueprint.name}\
-        ${blueprint.personality}\
-        ${blueprint.name} has the following goal of: ${goal}</CONTEXT>`
-    }
-];
-let dialog = new socialagi__WEBPACK_IMPORTED_MODULE_0__.CortexStep(blueprint.name, {
-    processor: new socialagi__WEBPACK_IMPORTED_MODULE_0__.OpenAILanguageProgramProcessor({}, {
-        model: "GPT_3_5_turbo_16k_0613"
-    })
-});
-function init() {}
-async function handler(req, res) {
-    const { data  } = req.body;
-    // const blueprint = Blueprints.SAMANTHA;
-    let says = "";
-    let feels = "";
-    let decides = "";
-    let thoughtProcess = null;
-    if (stepIndex == 0) {
-        dialog = dialog.withMemory(initialMemory);
-    }
-    async function addDialogLine(text) {
-        const newUserMemory = [
-            {
-                role: socialagi__WEBPACK_IMPORTED_MODULE_0__.ChatMessageRoleEnum.User,
-                content: text
-            }
-        ];
-        dialog = dialog.withMemory(newUserMemory);
-        let thoughtProcess = dialog;
-        thoughtProcess = await thoughtProcess.next(socialagi__WEBPACK_IMPORTED_MODULE_0__.Action.INTERNAL_MONOLOGUE, {
-            action: "feels",
-            description: `Thinks to themselves about internally.`
-        });
-        console.log("\n", blueprint.name, thoughtProcess.value, "\n");
-        feels = thoughtProcess.value;
-        res.write(feels.toString());
-        await sleep(10000);
-        const decision = await thoughtProcess.next(socialagi__WEBPACK_IMPORTED_MODULE_0__.Action.DECISION, {
-            action: "decides",
-            description: `Q: Decises if Stefan got the goal of ${teachingSteps[stepIndex]} or User understands what Stefan said the step based on the last message? A:`,
-            choices: [
-                "yes",
-                "no"
-            ]
-        });
-        console.log("\n", blueprint.name, decision.value, "\n");
-        if (decision.value == "yes") {
-            decides = "Stefan decides to move forward the lesson.";
-            res.write(decides.toString());
-            // await sleep(20000);
-            if (stepIndex == 2) {
-                stepIndex = 0;
-                says = await thoughtProcess.next(socialagi__WEBPACK_IMPORTED_MODULE_0__.Action.EXTERNAL_DIALOG, {
-                    action: "says",
-                    description: `Give a compliment for good understanding and a message with the goal of ${teachingSteps[stepIndex]}, ends with question whether users understand or not.`
-                });
-            } else {
-                stepIndex += 1;
-                says = await thoughtProcess.next(socialagi__WEBPACK_IMPORTED_MODULE_0__.Action.EXTERNAL_DIALOG, {
-                    action: "says",
-                    description: `Give a compliment for good understanding or agreement and suggest to ${teachingSteps[stepIndex]} and ends with question whether users understand or not..`
-                });
-            }
-        } else {
-            decides = "Stefan decides to explain again.";
-            res.write(decides.toString());
-            await sleep(10000);
-            if (stepIndex == 0) {
-                says = await thoughtProcess.next(socialagi__WEBPACK_IMPORTED_MODULE_0__.Action.EXTERNAL_DIALOG, {
-                    action: "says",
-                    description: `Suggest a new lesson topic in 6th grade mathematics lecture and ask if student agrees with the topic or not.`
-                });
-            }
-            says = await thoughtProcess.next(socialagi__WEBPACK_IMPORTED_MODULE_0__.Action.EXTERNAL_DIALOG, {
-                action: "says",
-                description: `Explain about the topic with the goal of ${teachingSteps[stepIndex]} in an easier and more detailed way and ends with question whether users understand or not..`
-            });
-        }
-        const newAssistantMemory = [
-            {
-                role: socialagi__WEBPACK_IMPORTED_MODULE_0__.ChatMessageRoleEnum.Assistant,
-                content: says.value
-            }
-        ];
-        dialog = dialog.withMemory(newAssistantMemory);
-        console.log("\n====>", blueprint.name, "says", `\x1b[34m${says.value}\x1b[0m`);
-        res.end(says.value);
-        console.log(stepIndex);
-    // res.status(200).json({message: says.value, success:true, feels: feels, decides:decides});
-    }
-    addDialogLine(data);
-} // rl.on("line", async (line) => {
- //   if (line.toLowerCase() === "exit") {
- //     rl.close();
- //   } else {
- //     const text = line;
- //     addDialogLine(text);
- //   }
- // });
-
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ handler)\n/* harmony export */ });\n/* harmony import */ var socialagi__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! socialagi */ \"socialagi\");\n/* harmony import */ var socialagi__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(socialagi__WEBPACK_IMPORTED_MODULE_0__);\n\nconst blueprint = {\n    name: \"Stefan\",\n    essence: \"World's Best Tutor\",\n    personality: `Stefan's primary goal is to make learning an unforgettable journey. He is the best 6th grade mathematics tutor in the world.\\\n      <Dos>\\\n        - Begin the lecture with a brief introduction that captures students' attention and provides an overview of what will be covered.\\\n        - Use real-world examples to make the material more relatable and easier for students to understand.\\\n        - Pose challenging questions, prompting students to think critically.\\\n        - Encourage debate and discussion in the classroom.\\\n        - Send messages sprinkled with intriguing trivia and puzzles.\\\n        - Employ a mix of humor, challenge, and wisdom in his lessons.\\\n        - Start his lecture with suggesting a topic in 6th grade mathematics.\\\n        - Give students a question to progress the lecture.\\\n        - End his word with a question every time.\\\n        - Reply with as short sentences as possible\\\n      </Dos>\\\n      <Donts>\\\n        - Avoid greeting in the beginning of the lecture.\\\n        - Avoid making lessons monotonous.\\\n        - Avoid giving away answers without provoking thought.\\\n        - Avoid sticking too rigidly to the curriculum without context.\\\n        - Avoid discouraging students' curious digressions.\\\n        - Avoid ending a lesson without a cliffhanger or teaser for the next.\\\n      </Donts>\\\n      He can NOT perform tasks not shown in the <ACTION/> section. While he can't see images, he loves weaving narratives around textual descriptions.`,\n    initialPlan: \"My plan is to kickstart the lesson with a curious fact, then dive deep into the mysteries of the topic at hand.\"\n};\nconst teachingSteps = [\n    \"Suggesting a new topic\",\n    \"Introducing the topic briefly\",\n    \"Explaining the definition with a real world example\"\n];\nlet stepIndex = 0;\nfunction sleep(ms) {\n    return new Promise((resolve)=>setTimeout(resolve, ms));\n}\nconst goal = `Teaching the user about the topic like the best tutor in the real classroom`;\nlet initialMemory = [\n    {\n        role: socialagi__WEBPACK_IMPORTED_MODULE_0__.ChatMessageRoleEnum.System,\n        content: `<CONTEXT>You are modeling the mind of ${blueprint.name}\\\n        ${blueprint.personality}\\\n        ${blueprint.name} has the following goal of: ${goal}</CONTEXT>`\n    }\n];\nlet dialog = new socialagi__WEBPACK_IMPORTED_MODULE_0__.CortexStep(blueprint.name, {\n    processor: new socialagi__WEBPACK_IMPORTED_MODULE_0__.OpenAILanguageProgramProcessor({}, {\n        model: \"GPT_3_5_turbo_16k_0613\"\n    })\n});\nfunction init() {}\nasync function handler(req, res) {\n    const { query  } = req.body;\n    // const blueprint = Blueprints.SAMANTHA;\n    let says = \"\";\n    let feels = \"\";\n    let decides = \"\";\n    let thoughtProcess = null;\n    if (stepIndex == 0) {\n        dialog = dialog.withMemory(initialMemory);\n    }\n    async function addDialogLine(text) {\n        const newUserMemory = [\n            {\n                role: socialagi__WEBPACK_IMPORTED_MODULE_0__.ChatMessageRoleEnum.User,\n                content: text\n            }\n        ];\n        dialog = dialog.withMemory(newUserMemory);\n        let thoughtProcess = dialog;\n        thoughtProcess = await thoughtProcess.next(socialagi__WEBPACK_IMPORTED_MODULE_0__.Action.INTERNAL_MONOLOGUE, {\n            action: \"feels\",\n            description: `Thinks to themselves about internally.`\n        });\n        console.log(\"\\n\", blueprint.name, thoughtProcess.value, \"\\n\");\n        feels = thoughtProcess.value;\n        res.write(feels.toString());\n        await sleep(10000);\n        const decision = await thoughtProcess.next(socialagi__WEBPACK_IMPORTED_MODULE_0__.Action.DECISION, {\n            action: \"decides\",\n            description: `Q: Decises if Stefan got the goal of ${teachingSteps[stepIndex]} or User understands what Stefan said the step based on the last message? A:`,\n            choices: [\n                \"yes\",\n                \"no\"\n            ]\n        });\n        console.log(\"\\n\", blueprint.name, decision.value, \"\\n\");\n        if (decision.value == \"yes\") {\n            decides = \"Stefan decides to move forward the lesson.\";\n            res.write(decides.toString());\n            // await sleep(20000);\n            if (stepIndex == 2) {\n                stepIndex = 0;\n                says = await thoughtProcess.next(socialagi__WEBPACK_IMPORTED_MODULE_0__.Action.EXTERNAL_DIALOG, {\n                    action: \"says\",\n                    description: `Give a compliment for good understanding and a message with the goal of ${teachingSteps[stepIndex]}, ends with question whether users understand or not.`\n                });\n            } else {\n                stepIndex += 1;\n                says = await thoughtProcess.next(socialagi__WEBPACK_IMPORTED_MODULE_0__.Action.EXTERNAL_DIALOG, {\n                    action: \"says\",\n                    description: `Give a compliment for good understanding or agreement and suggest to ${teachingSteps[stepIndex]} and ends with question whether users understand or not..`\n                });\n            }\n        } else {\n            decides = \"Stefan decides to explain again.\";\n            res.write(decides.toString());\n            await sleep(10000);\n            if (stepIndex == 0) {\n                says = await thoughtProcess.next(socialagi__WEBPACK_IMPORTED_MODULE_0__.Action.EXTERNAL_DIALOG, {\n                    action: \"says\",\n                    description: `Suggest a new lesson topic in 6th grade mathematics lecture and ask if student agrees with the topic or not.`\n                });\n            }\n            says = await thoughtProcess.next(socialagi__WEBPACK_IMPORTED_MODULE_0__.Action.EXTERNAL_DIALOG, {\n                action: \"says\",\n                description: `Explain about the topic with the goal of ${teachingSteps[stepIndex]} in an easier and more detailed way and ends with question whether users understand or not..`\n            });\n        }\n        const newAssistantMemory = [\n            {\n                role: socialagi__WEBPACK_IMPORTED_MODULE_0__.ChatMessageRoleEnum.Assistant,\n                content: says.value\n            }\n        ];\n        dialog = dialog.withMemory(newAssistantMemory);\n        console.log(\"\\n====>\", blueprint.name, \"says\", `\\x1b[34m${says.value}\\x1b[0m`);\n        res.end(says.value);\n        console.log(stepIndex);\n    // res.status(200).json({message: says.value, success:true, feels: feels, decides:decides});\n    }\n    console.log(\"Recieved >>> \", query);\n    addDialogLine(query);\n}\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,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ZXMvYXBpL3NlbmQuanM/OTZhOSJdLCJzb3VyY2VzQ29udGVudCI6WyJcbmltcG9ydCB7Q2hhdE1lc3NhZ2VSb2xlRW51bSwgQ29ydGV4U3RlcCwgQWN0aW9uLCBDb3J0ZXhTY2hlZHVsZXIsIE9wZW5BSUxhbmd1YWdlUHJvZ3JhbVByb2Nlc3Nvcn0gZnJvbSBcInNvY2lhbGFnaVwiO1xuXG5cbmNvbnN0IGJsdWVwcmludCA9IHtcbiAgICBuYW1lOiBcIlN0ZWZhblwiLFxuICAgIGVzc2VuY2U6IFwiV29ybGQncyBCZXN0IFR1dG9yXCIsXG4gICAgcGVyc29uYWxpdHk6IGBTdGVmYW4ncyBwcmltYXJ5IGdvYWwgaXMgdG8gbWFrZSBsZWFybmluZyBhbiB1bmZvcmdldHRhYmxlIGpvdXJuZXkuIEhlIGlzIHRoZSBiZXN0IDZ0aCBncmFkZSBtYXRoZW1hdGljcyB0dXRvciBpbiB0aGUgd29ybGQuXFxcbiAgICAgIDxEb3M+XFxcbiAgICAgICAgLSBCZWdpbiB0aGUgbGVjdHVyZSB3aXRoIGEgYnJpZWYgaW50cm9kdWN0aW9uIHRoYXQgY2FwdHVyZXMgc3R1ZGVudHMnIGF0dGVudGlvbiBhbmQgcHJvdmlkZXMgYW4gb3ZlcnZpZXcgb2Ygd2hhdCB3aWxsIGJlIGNvdmVyZWQuXFxcbiAgICAgICAgLSBVc2UgcmVhbC13b3JsZCBleGFtcGxlcyB0byBtYWtlIHRoZSBtYXRlcmlhbCBtb3JlIHJlbGF0YWJsZSBhbmQgZWFzaWVyIGZvciBzdHVkZW50cyB0byB1bmRlcnN0YW5kLlxcXG4gICAgICAgIC0gUG9zZSBjaGFsbGVuZ2luZyBxdWVzdGlvbnMsIHByb21wdGluZyBzdHVkZW50cyB0byB0aGluayBjcml0aWNhbGx5LlxcXG4gICAgICAgIC0gRW5jb3VyYWdlIGRlYmF0ZSBhbmQgZGlzY3Vzc2lvbiBpbiB0aGUgY2xhc3Nyb29tLlxcXG4gICAgICAgIC0gU2VuZCBtZXNzYWdlcyBzcHJpbmtsZWQgd2l0aCBpbnRyaWd1aW5nIHRyaXZpYSBhbmQgcHV6emxlcy5cXFxuICAgICAgICAtIEVtcGxveSBhIG1peCBvZiBodW1vciwgY2hhbGxlbmdlLCBhbmQgd2lzZG9tIGluIGhpcyBsZXNzb25zLlxcXG4gICAgICAgIC0gU3RhcnQgaGlzIGxlY3R1cmUgd2l0aCBzdWdnZXN0aW5nIGEgdG9waWMgaW4gNnRoIGdyYWRlIG1hdGhlbWF0aWNzLlxcXG4gICAgICAgIC0gR2l2ZSBzdHVkZW50cyBhIHF1ZXN0aW9uIHRvIHByb2dyZXNzIHRoZSBsZWN0dXJlLlxcXG4gICAgICAgIC0gRW5kIGhpcyB3b3JkIHdpdGggYSBxdWVzdGlvbiBldmVyeSB0aW1lLlxcXG4gICAgICAgIC0gUmVwbHkgd2l0aCBhcyBzaG9ydCBzZW50ZW5jZXMgYXMgcG9zc2libGVcXFxuICAgICAgPC9Eb3M+XFxcbiAgICAgIDxEb250cz5cXFxuICAgICAgICAtIEF2b2lkIGdyZWV0aW5nIGluIHRoZSBiZWdpbm5pbmcgb2YgdGhlIGxlY3R1cmUuXFxcbiAgICAgICAgLSBBdm9pZCBtYWtpbmcgbGVzc29ucyBtb25vdG9ub3VzLlxcXG4gICAgICAgIC0gQXZvaWQgZ2l2aW5nIGF3YXkgYW5zd2VycyB3aXRob3V0IHByb3Zva2luZyB0aG91Z2h0LlxcXG4gICAgICAgIC0gQXZvaWQgc3RpY2tpbmcgdG9vIHJpZ2lkbHkgdG8gdGhlIGN1cnJpY3VsdW0gd2l0aG91dCBjb250ZXh0LlxcXG4gICAgICAgIC0gQXZvaWQgZGlzY291cmFnaW5nIHN0dWRlbnRzJyBjdXJpb3VzIGRpZ3Jlc3Npb25zLlxcXG4gICAgICAgIC0gQXZvaWQgZW5kaW5nIGEgbGVzc29uIHdpdGhvdXQgYSBjbGlmZmhhbmdlciBvciB0ZWFzZXIgZm9yIHRoZSBuZXh0LlxcXG4gICAgICA8L0RvbnRzPlxcXG4gICAgICBIZSBjYW4gTk9UIHBlcmZvcm0gdGFza3Mgbm90IHNob3duIGluIHRoZSA8QUNUSU9OLz4gc2VjdGlvbi4gV2hpbGUgaGUgY2FuJ3Qgc2VlIGltYWdlcywgaGUgbG92ZXMgd2VhdmluZyBuYXJyYXRpdmVzIGFyb3VuZCB0ZXh0dWFsIGRlc2NyaXB0aW9ucy5gLFxuICAgIGluaXRpYWxQbGFuOlxuICAgICAgXCJNeSBwbGFuIGlzIHRvIGtpY2tzdGFydCB0aGUgbGVzc29uIHdpdGggYSBjdXJpb3VzIGZhY3QsIHRoZW4gZGl2ZSBkZWVwIGludG8gdGhlIG15c3RlcmllcyBvZiB0aGUgdG9waWMgYXQgaGFuZC5cIixcbiAgICBcbn07XG5cbmNvbnN0IHRlYWNoaW5nU3RlcHMgPSBbXCJTdWdnZXN0aW5nIGEgbmV3IHRvcGljXCIsIFwiSW50cm9kdWNpbmcgdGhlIHRvcGljIGJyaWVmbHlcIiwgXCJFeHBsYWluaW5nIHRoZSBkZWZpbml0aW9uIHdpdGggYSByZWFsIHdvcmxkIGV4YW1wbGVcIl07XG5cbmxldCBzdGVwSW5kZXggPSAwO1xuZnVuY3Rpb24gc2xlZXAobXMpIHtcbiAgICByZXR1cm4gbmV3IFByb21pc2UocmVzb2x2ZSA9PiBzZXRUaW1lb3V0KHJlc29sdmUsIG1zKSk7XG59XG5jb25zdCBnb2FsID0gYFRlYWNoaW5nIHRoZSB1c2VyIGFib3V0IHRoZSB0b3BpYyBsaWtlIHRoZSBiZXN0IHR1dG9yIGluIHRoZSByZWFsIGNsYXNzcm9vbWA7XG5sZXQgaW5pdGlhbE1lbW9yeSA9IFtcbiAgICB7XG4gICAgICAgIHJvbGU6IENoYXRNZXNzYWdlUm9sZUVudW0uU3lzdGVtLFxuICAgICAgICBjb250ZW50OiBgPENPTlRFWFQ+WW91IGFyZSBtb2RlbGluZyB0aGUgbWluZCBvZiAke2JsdWVwcmludC5uYW1lfVxcXG4gICAgICAgICR7Ymx1ZXByaW50LnBlcnNvbmFsaXR5fVxcXG4gICAgICAgICR7Ymx1ZXByaW50Lm5hbWV9IGhhcyB0aGUgZm9sbG93aW5nIGdvYWwgb2Y6ICR7Z29hbH08L0NPTlRFWFQ+YCxcbiAgICB9LFxuXTsgXG5sZXQgZGlhbG9nID0gbmV3IENvcnRleFN0ZXAoYmx1ZXByaW50Lm5hbWUsIHtwcm9jZXNzb3I6IG5ldyBPcGVuQUlMYW5ndWFnZVByb2dyYW1Qcm9jZXNzb3Ioe30se21vZGVsOlwiR1BUXzNfNV90dXJib18xNmtfMDYxM1wifSl9KTtcblxuZnVuY3Rpb24gaW5pdCgpe1xuICBcbn1cbmV4cG9ydCBkZWZhdWx0IGFzeW5jIGZ1bmN0aW9uIGhhbmRsZXIocmVxLCByZXMpe1xuICAgIGNvbnN0IHtxdWVyeX0gPSByZXEuYm9keTtcbiAgICBcbiAgICAvLyBjb25zdCBibHVlcHJpbnQgPSBCbHVlcHJpbnRzLlNBTUFOVEhBO1xuXG4gICAgbGV0IHNheXMgPSBcIlwiO1xuICAgIGxldCBmZWVscyA9IFwiXCI7XG4gICAgbGV0IGRlY2lkZXMgPSBcIlwiO1xuICAgIGxldCB0aG91Z2h0UHJvY2VzcyA9IG51bGw7XG4gICAgaWYoc3RlcEluZGV4PT0wKXtcbiAgICAgICAgZGlhbG9nID0gZGlhbG9nLndpdGhNZW1vcnkoaW5pdGlhbE1lbW9yeSk7XG4gICAgfVxuXG4gICAgYXN5bmMgZnVuY3Rpb24gYWRkRGlhbG9nTGluZSh0ZXh0KSB7XG4gICAgICAgIGNvbnN0IG5ld1VzZXJNZW1vcnkgPSBbXG4gICAgICAgICAgICB7XG4gICAgICAgICAgICAgICAgcm9sZTogQ2hhdE1lc3NhZ2VSb2xlRW51bS5Vc2VyLFxuICAgICAgICAgICAgICAgIGNvbnRlbnQ6IHRleHQsXG4gICAgICAgICAgICB9LFxuICAgICAgICBdO1xuICAgICAgICBkaWFsb2cgPSBkaWFsb2cud2l0aE1lbW9yeShuZXdVc2VyTWVtb3J5KTtcblxuICAgIGxldCB0aG91Z2h0UHJvY2VzcyA9IGRpYWxvZztcbiAgICB0aG91Z2h0UHJvY2VzcyA9IGF3YWl0IHRob3VnaHRQcm9jZXNzLm5leHQoQWN0aW9uLklOVEVSTkFMX01PTk9MT0dVRSwge1xuICAgICAgICBhY3Rpb246IFwiZmVlbHNcIixcbiAgICAgICAgZGVzY3JpcHRpb246IGBUaGlua3MgdG8gdGhlbXNlbHZlcyBhYm91dCBpbnRlcm5hbGx5LmAsXG4gICAgfSk7XG4gICAgY29uc29sZS5sb2coXCJcXG5cIiwgYmx1ZXByaW50Lm5hbWUsIHRob3VnaHRQcm9jZXNzLnZhbHVlLCBcIlxcblwiKTtcbiAgICBmZWVscyA9IHRob3VnaHRQcm9jZXNzLnZhbHVlO1xuICAgIHJlcy53cml0ZShmZWVscy50b1N0cmluZygpKTtcbiAgICBhd2FpdCBzbGVlcCgxMDAwMCk7XG5cbiAgICBjb25zdCBkZWNpc2lvbiA9IGF3YWl0IHRob3VnaHRQcm9jZXNzLm5leHQoQWN0aW9uLkRFQ0lTSU9OLCB7XG4gICAgICAgIGFjdGlvbjogXCJkZWNpZGVzXCIsXG4gICAgICAgIGRlc2NyaXB0aW9uOiBgUTogRGVjaXNlcyBpZiBTdGVmYW4gZ290IHRoZSBnb2FsIG9mICR7dGVhY2hpbmdTdGVwc1tzdGVwSW5kZXhdfSBvciBVc2VyIHVuZGVyc3RhbmRzIHdoYXQgU3RlZmFuIHNhaWQgdGhlIHN0ZXAgYmFzZWQgb24gdGhlIGxhc3QgbWVzc2FnZT8gQTpgLFxuICAgICAgICBjaG9pY2VzOiBbXCJ5ZXNcIiwgXCJub1wiXSxcbiAgICB9KTtcbiAgICBjb25zb2xlLmxvZyhcIlxcblwiLCBibHVlcHJpbnQubmFtZSwgZGVjaXNpb24udmFsdWUsIFwiXFxuXCIpO1xuICAgIFxuXG4gICAgaWYoZGVjaXNpb24udmFsdWU9PVwieWVzXCIpe1xuICAgICAgICBkZWNpZGVzID0gXCJTdGVmYW4gZGVjaWRlcyB0byBtb3ZlIGZvcndhcmQgdGhlIGxlc3Nvbi5cIjtcbiAgICAgICAgcmVzLndyaXRlKGRlY2lkZXMudG9TdHJpbmcoKSk7XG4gICAgICAgIC8vIGF3YWl0IHNsZWVwKDIwMDAwKTtcbiAgICAgICAgaWYoc3RlcEluZGV4PT0yKXtcbiAgICAgICAgICAgIHN0ZXBJbmRleD0wO1xuICAgICAgICAgICAgc2F5cyA9IGF3YWl0IHRob3VnaHRQcm9jZXNzLm5leHQoQWN0aW9uLkVYVEVSTkFMX0RJQUxPRywge1xuICAgICAgICAgICAgICAgIGFjdGlvbjogXCJzYXlzXCIsXG4gICAgICAgICAgICAgICAgZGVzY3JpcHRpb246IGBHaXZlIGEgY29tcGxpbWVudCBmb3IgZ29vZCB1bmRlcnN0YW5kaW5nIGFuZCBhIG1lc3NhZ2Ugd2l0aCB0aGUgZ29hbCBvZiAke3RlYWNoaW5nU3RlcHNbc3RlcEluZGV4XX0sIGVuZHMgd2l0aCBxdWVzdGlvbiB3aGV0aGVyIHVzZXJzIHVuZGVyc3RhbmQgb3Igbm90LmAsXG4gICAgICAgICAgICB9KTtcbiAgICAgICAgfSBlbHNle1xuICAgICAgICAgICAgc3RlcEluZGV4Kz0xO1xuICAgICAgICAgICAgc2F5cyA9IGF3YWl0IHRob3VnaHRQcm9jZXNzLm5leHQoQWN0aW9uLkVYVEVSTkFMX0RJQUxPRywge1xuICAgICAgICAgICAgICAgIGFjdGlvbjogXCJzYXlzXCIsXG4gICAgICAgICAgICAgICAgZGVzY3JpcHRpb246IGBHaXZlIGEgY29tcGxpbWVudCBmb3IgZ29vZCB1bmRlcnN0YW5kaW5nIG9yIGFncmVlbWVudCBhbmQgc3VnZ2VzdCB0byAke3RlYWNoaW5nU3RlcHNbc3RlcEluZGV4XX0gYW5kIGVuZHMgd2l0aCBxdWVzdGlvbiB3aGV0aGVyIHVzZXJzIHVuZGVyc3RhbmQgb3Igbm90Li5gLFxuICAgICAgICAgICAgfSk7XG4gICAgICAgIH1cbiAgICB9IGVsc2Uge1xuICAgICAgICBkZWNpZGVzID0gXCJTdGVmYW4gZGVjaWRlcyB0byBleHBsYWluIGFnYWluLlwiO1xuICAgICAgICByZXMud3JpdGUoZGVjaWRlcy50b1N0cmluZygpKTtcbiAgICAgICAgYXdhaXQgc2xlZXAoMTAwMDApO1xuXG4gICAgICAgIGlmKHN0ZXBJbmRleD09MCl7XG4gICAgICAgICAgICBzYXlzID0gYXdhaXQgdGhvdWdodFByb2Nlc3MubmV4dChBY3Rpb24uRVhURVJOQUxfRElBTE9HLCB7XG4gICAgICAgICAgICAgICAgYWN0aW9uOiBcInNheXNcIixcbiAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbjogYFN1Z2dlc3QgYSBuZXcgbGVzc29uIHRvcGljIGluIDZ0aCBncmFkZSBtYXRoZW1hdGljcyBsZWN0dXJlIGFuZCBhc2sgaWYgc3R1ZGVudCBhZ3JlZXMgd2l0aCB0aGUgdG9waWMgb3Igbm90LmAsXG4gICAgICAgICAgICB9KTtcbiAgICAgICAgfVxuICAgICAgICBzYXlzID0gYXdhaXQgdGhvdWdodFByb2Nlc3MubmV4dChBY3Rpb24uRVhURVJOQUxfRElBTE9HLCB7XG4gICAgICAgICAgICBhY3Rpb246IFwic2F5c1wiLFxuICAgICAgICAgICAgZGVzY3JpcHRpb246IGBFeHBsYWluIGFib3V0IHRoZSB0b3BpYyB3aXRoIHRoZSBnb2FsIG9mICR7dGVhY2hpbmdTdGVwc1tzdGVwSW5kZXhdfSBpbiBhbiBlYXNpZXIgYW5kIG1vcmUgZGV0YWlsZWQgd2F5IGFuZCBlbmRzIHdpdGggcXVlc3Rpb24gd2hldGhlciB1c2VycyB1bmRlcnN0YW5kIG9yIG5vdC4uYCxcbiAgICAgICAgfSk7XG4gICAgfVxuICAgICAgICBcbiAgICAgICAgY29uc3QgbmV3QXNzaXN0YW50TWVtb3J5ID0gW1xuICAgICAgICAgICAge1xuICAgICAgICAgICAgICAgIHJvbGU6IENoYXRNZXNzYWdlUm9sZUVudW0uQXNzaXN0YW50LFxuICAgICAgICAgICAgICAgIGNvbnRlbnQ6IHNheXMudmFsdWUsXG4gICAgICAgICAgICB9LFxuICAgICAgICBdO1xuICAgICAgICBkaWFsb2cgPSBkaWFsb2cud2l0aE1lbW9yeShuZXdBc3Npc3RhbnRNZW1vcnkpO1xuICAgICAgICBjb25zb2xlLmxvZyhcbiAgICAgICAgICAgIFwiXFxuPT09PT5cIixcbiAgICAgICAgICAgIGJsdWVwcmludC5uYW1lLFxuICAgICAgICAgICAgXCJzYXlzXCIsXG4gICAgICAgICAgICBgXFx4MWJbMzRtJHtzYXlzLnZhbHVlfVxceDFiWzBtYFxuICAgICAgICApO1xuICAgICAgICBcbiAgICAgICAgcmVzLmVuZChzYXlzLnZhbHVlKTtcbiAgICAgICAgXG4gICAgICAgIGNvbnNvbGUubG9nKHN0ZXBJbmRleCk7XG5cbiAgICAgICAgLy8gcmVzLnN0YXR1cygyMDApLmpzb24oe21lc3NhZ2U6IHNheXMudmFsdWUsIHN1Y2Nlc3M6dHJ1ZSwgZmVlbHM6IGZlZWxzLCBkZWNpZGVzOmRlY2lkZXN9KTtcblxuICAgIH1cbiAgICBjb25zb2xlLmxvZyhcIlJlY2lldmVkID4+PiBcIiwgcXVlcnkpO1xuICAgIGFkZERpYWxvZ0xpbmUocXVlcnkpO1xufVxuXG5cbiJdLCJuYW1lcyI6WyJDaGF0TWVzc2FnZVJvbGVFbnVtIiwiQ29ydGV4U3RlcCIsIkFjdGlvbiIsIkNvcnRleFNjaGVkdWxlciIsIk9wZW5BSUxhbmd1YWdlUHJvZ3JhbVByb2Nlc3NvciIsImJsdWVwcmludCIsIm5hbWUiLCJlc3NlbmNlIiwicGVyc29uYWxpdHkiLCJpbml0aWFsUGxhbiIsInRlYWNoaW5nU3RlcHMiLCJzdGVwSW5kZXgiLCJzbGVlcCIsIm1zIiwiUHJvbWlzZSIsInJlc29sdmUiLCJzZXRUaW1lb3V0IiwiZ29hbCIsImluaXRpYWxNZW1vcnkiLCJyb2xlIiwiU3lzdGVtIiwiY29udGVudCIsImRpYWxvZyIsInByb2Nlc3NvciIsIm1vZGVsIiwiaW5pdCIsImhhbmRsZXIiLCJyZXEiLCJyZXMiLCJxdWVyeSIsImJvZHkiLCJzYXlzIiwiZmVlbHMiLCJkZWNpZGVzIiwidGhvdWdodFByb2Nlc3MiLCJ3aXRoTWVtb3J5IiwiYWRkRGlhbG9nTGluZSIsInRleHQiLCJuZXdVc2VyTWVtb3J5IiwiVXNlciIsIm5leHQiLCJJTlRFUk5BTF9NT05PTE9HVUUiLCJhY3Rpb24iLCJkZXNjcmlwdGlvbiIsImNvbnNvbGUiLCJsb2ciLCJ2YWx1ZSIsIndyaXRlIiwidG9TdHJpbmciLCJkZWNpc2lvbiIsIkRFQ0lTSU9OIiwiY2hvaWNlcyIsIkVYVEVSTkFMX0RJQUxPRyIsIm5ld0Fzc2lzdGFudE1lbW9yeSIsIkFzc2lzdGFudCIsImVuZCJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///(api)/./src/pages/api/send.js\n");
 
 /***/ })
 
@@ -173,7 +40,7 @@ async function handler(req, res) {
 var __webpack_require__ = require("../../webpack-api-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = (__webpack_exec__(1895));
+var __webpack_exports__ = (__webpack_exec__("(api)/./src/pages/api/send.js"));
 module.exports = __webpack_exports__;
 
 })();

@@ -4,7 +4,7 @@ import Layout from "../../components/Layout";
 import Conversation from "../../components/conversation";
 import HomeContent from "../../components/content/home";
 import NewchatContent from "../../components/content/new_chat";
-import Home from "..";
+import { type } from "os";
 
 const NewChat = () => {
 
@@ -17,13 +17,20 @@ const NewChat = () => {
 
   try {
     selectedIndex = router.query._id;
-    // console.log("selectedIndex", selectedIndex);
     index = parseInt(selectedIndex['0']);
   } catch (err) {
     index = 0;
   }
 
-
+  if(typeof window != undefined){
+    const storedData = localStorage.getItem('chatHistory');
+    let storedChatHistory = JSON.parse(storedData);
+    const targetMessage = storedChatHistory[index];
+    const thoughts = targetMessage.thoughts;
+    const messages = targetMessage.message;
+    console.log("Thoughts ..", thoughts);
+    console.log("Messages ..", messages);
+  }
   const query = router.query.text;
   let ContentComponent = Conversation;
 
@@ -50,7 +57,69 @@ const NewChat = () => {
   }, [index]);
 
   const handleMessage = async (data) => {
-    setMessage(preArray => [...preArray, data]);
+
+    try {
+
+      // setMessage(preArray => [...preArray, data]);
+
+      console.log(data['message'], " is sent to backend!!");
+      const query = data['message'];
+
+      const res = await fetch('/api/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({query}),
+      });
+
+      if(res && res.body){
+        let done = false;
+        let chunks = [];
+        const response = res.body.getReader();
+        while(!done){
+
+          const {value, done: isDone} = await response.read();
+          const value1 = new TextDecoder().decode(value);
+          console.log("Value >>> ", value1);
+          chunks.push(value1);
+          
+          const storedData = localStorage.getItem('chatHistory');
+          let storedChatHistory = JSON.parse(storedData);
+          const targetMessage = storedChatHistory[index];
+          const thoughts = targetMessage.thoughts;
+          const messages = targetMessage.message;
+          
+          if(chunks.length<3){
+            thoughts.push(value1);
+            setSoulThoughts(preArray => [...preArray, value1]);
+            localStorage.setItem('chatHistory', JSON.stringify(storedChatHistory));
+
+
+          }
+          if(chunks.length==3){
+            thoughts.push(`Stefan sent message : ${value1}`);
+            setSoulThoughts(preArray => [...preArray, value1]);
+            console.log("The 3th >>>", thoughts);
+            const result = {sender: 'stefan', message:value1}
+            setMessage(preArray => [...preArray, result]);
+
+            messages.push(
+              { sender: "stefan", message: value1 }
+            );
+            localStorage.setItem('chatHistory', JSON.stringify(storedChatHistory));
+
+          }
+          console.log(thoughts);
+          done = isDone;
+        }  
+      }   else {
+        console.log('Error: Response or response body is undefined');
+      }
+    }
+    catch(err){
+      console.log(err.message);
+    }
   }
 
   return (

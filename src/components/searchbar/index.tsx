@@ -20,18 +20,14 @@ const SearchBar = ({ itemIndex, onSearch }) => {
         if (typeof window !== 'undefined') {
             try {
                 const messages = targetMessage.message;
-                const thoughts = targetMessage.thoughts;
+                // const thoughts = targetMessage.thoughts;
                 messages.push(
-                    { sender: "user", message: message },
-                    { sender: "stefan", message: message }
+                    { sender: "user", message: message }
                 );
-                thoughts.push(
-                    "I think he is asking me what I can do for him.",
-                    "So I will do the best as possible."
-                );
+                // thoughts.push();
                 localStorage.setItem('chatHistory', JSON.stringify(storedChatHistory));
             } catch (err) {
-                console.log("catch");
+                console.log("Error saving...", err.message);
             }
         }
         setMessage("");

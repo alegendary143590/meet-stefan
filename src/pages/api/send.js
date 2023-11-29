@@ -53,7 +53,7 @@ function init(){
   
 }
 export default async function handler(req, res){
-    const {data} = req.body;
+    const {query} = req.body;
     
     // const blueprint = Blueprints.SAMANTHA;
 
@@ -147,15 +147,8 @@ export default async function handler(req, res){
         // res.status(200).json({message: says.value, success:true, feels: feels, decides:decides});
 
     }
-    addDialogLine(data);
+    console.log("Recieved >>> ", query);
+    addDialogLine(query);
 }
 
-// rl.on("line", async (line) => {
-//   if (line.toLowerCase() === "exit") {
-//     rl.close();
-//   } else {
-//     const text = line;
-//     addDialogLine(text);
-//   }
-// });
 
