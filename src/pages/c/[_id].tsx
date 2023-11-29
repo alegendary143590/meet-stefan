@@ -6,44 +6,56 @@ import HomeContent from "../../components/content/home";
 import NewchatContent from "../../components/content/new_chat";
 import Home from "..";
 
-const NewChat = ()=>{
+const NewChat = () => {
 
   let [message, setMessage] = useState([]);
-  let [soulThoughts, setSoulThoughts] = useState(["HI","If done"]);
+  let [soulThoughts, setSoulThoughts] = useState(["HI", "If done"]);
   const router = useRouter();
-  
-  const selectedIndex  = router.query._id;
-  const index = parseInt(selectedIndex[0]);
-  const query = router.query.text;
 
-  let all_messages:any[] = [];
+  let selectedIndex;
+  let index = 0;
+
+  try {
+    selectedIndex = router.query._id;
+    // console.log("selectedIndex", selectedIndex);
+    index = parseInt(selectedIndex['0']);
+  } catch (err) {
+    index = 0;
+  }
+
+
+  const query = router.query.text;
+  let ContentComponent = Conversation;
+
+  let all_messages: any[] = [];
+
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const chatHistory = localStorage.getItem("chatHistory");
-      all_messages = JSON.parse(chatHistory);
-      const messages = all_messages[index].message;
-      setMessage(messages);
+    // console.log("id-handle", message);
+    try {
+      if (typeof window !== "undefined") {
+        const chatHistory = localStorage.getItem("chatHistory");
+        all_messages = JSON.parse(chatHistory);
+        const messages = all_messages[index].message;
+      }
+      if (selectedIndex === "init") {
+        ContentComponent = HomeContent;
+      }
+      if (selectedIndex === "new-chat") {
+        ContentComponent = NewchatContent;
+      }
+    } catch (err) {
+      
     }
+    
   }, [index]);
 
-  let ContentComponent = Conversation;
-  
-  if(selectedIndex==="init"){
-    ContentComponent = HomeContent;
+  const handleMessage = async (data) => {
+    setMessage(preArray => [...preArray, data]);
   }
-  if (selectedIndex==="new-chat"){
-    ContentComponent = NewchatContent;
-  }
-  const handleMessage = (data) => {
-    // setMessage(preArray => [...preArray, data]);
-    // console.log("Item >>>", message);
-  }
-
-  // console.log(selectedIndex);
 
   return (
-    <Layout index={selectedIndex} thoughts={soulThoughts}>
-        <ContentComponent message={message} />
+    <Layout index={selectedIndex} thoughts={soulThoughts} typeMessage={handleMessage}>
+      <ContentComponent selectedIndex={selectedIndex} message={message} />
     </Layout>
   )
 }

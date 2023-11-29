@@ -17,7 +17,7 @@
     "@babel/preset-react": "^7.16.5",
     "@vercel/analytics": "^0.1.11",
     "autoprefixer": "10.4.14",
-    "babel-loader": "^8.2.3",
+    "babel-loader": "^8.2.0",
     "eslint": "7.32.0",
     "eslint-config-next": "13.3.0",
     "gray-matter": "^4.0.3",
@@ -33,9 +33,7 @@
     "tailwindcss": "3.3.1"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
+    "extends": "react-app"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",

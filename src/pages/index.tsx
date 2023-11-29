@@ -1,17 +1,25 @@
 
 import Layout from "../components/Layout";
-import Image from "next/image";
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import HomeContent from "../components/content/home";
 import { useRouter } from "next/router";
-import { createContext } from "vm";
 
-
-const Home = ()=>{ 
+const Home = () => {
   const [selectedIndex, setSelectedIndex] = useState('init');
   const [chatHistory, setChatHistory] = useState([
-    { title: "Item... ", message: [{sender:"user", message:"Hi"}], thoughts:["Stefan gets excited a lot.", "Stefan feels bored!"] }
+    {
+      title: "Item... ",
+      message: [
+        {
+          sender: "user",
+          message: "Hi"
+        }
+      ],
+      thoughts: [
+        "Stefan gets excited a lot.",
+        "Stefan feels bored!"
+      ]
+    }
   ]);
 
   if (typeof window !== 'undefined') {
@@ -20,12 +28,12 @@ const Home = ()=>{
   }
 
   const router = useRouter();
-  
-    return(
-        <Layout index={selectedIndex} thoughts={[]}>
-          <HomeContent />
-        </Layout>
-    )
+
+  return (
+    <Layout index={selectedIndex} thoughts={[]}>
+      <HomeContent />
+    </Layout>
+  )
 }
 
 export default Home
