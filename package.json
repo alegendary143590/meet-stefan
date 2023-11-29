@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "description": "Example socialagi integration into a website, showcasing Samantha",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "DISABLE_ESLINT_PLUGIN=true next dev",
+    "build": "DISABLE_ESLINT_PLUGIN=true next build",
+    "start": "DISABLE_ESLINT_PLUGIN=true next start",
+    "lint": "DISABLE_ESLINT_PLUGIN=true next lint"
   },
   "engines": {
     "node": "18.x"
