@@ -1,9 +1,3 @@
-# SAMANTHA
-
-This example website contains the code for Samantha from [Meet Samantha](http://meetsamantha.ai), and provides a simple way to get started writing [SocialAGI](https://github.com/opensouls/SocialAGI) code and create your own AI soul.
-
-![img.png](img.png)
-
 ### Getting Started
 
 Samantha is a Next.js project. After cloning the repo, this project requires one environment variable to be set
