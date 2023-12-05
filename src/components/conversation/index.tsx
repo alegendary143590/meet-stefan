@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import MarkdownDisplay from "../markdown"
+import MarkdownDisplay from "../markdown";
 
 const Conversation = ({ selectedIndex, message }) => {
 
@@ -18,11 +18,6 @@ const Conversation = ({ selectedIndex, message }) => {
     }
 
     const [loading, setLoading] = useState(false);
-    const messagesEndRef = useRef(null);
-    useEffect(() => {
-        // setMessages(message);
-        // console.log("conversation-message ======> ", message);
-    }, [message]);
 
     return (
         <div className="pt-5 px-3">
@@ -89,6 +84,7 @@ const Conversation = ({ selectedIndex, message }) => {
                     )
                 }
             })}
+            
         </div>
     );
 }

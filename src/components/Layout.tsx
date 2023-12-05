@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react"
+import React, { ReactNode, useState, useEffect, useRef } from "react"
 import Header from "./Header"
 import LeftSidebar from "./sidebar/left"
 import RightSidebar from "./sidebar/right"
@@ -17,10 +17,7 @@ const Layout = ({ index, children, thoughts, typeMessage }: LayoutProps) => {
 
 
   const [itemIndex, setItemIndex] = useState(index);
-  let [chatHistory, setChatHistory] = useState('init');
-  let [chatItem, setChatItem] = useState([
-    { title: "Item... ", message: [{ sender: "user", message: "Hi" }], isTitle: true }
-  ]);
+  const refEndMessage = useRef(null);
   const [soulThoughts, setSoulThoughts] = useState(thoughts);
   const router = useRouter();
 
@@ -50,6 +47,12 @@ const Layout = ({ index, children, thoughts, typeMessage }: LayoutProps) => {
       });
     }
   }
+  const scrollToBottomMessage = () => {
+    refEndMessage.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  useEffect(()=>{
+    scrollToBottomMessage();
+  },[thoughts])
   const updateChatHistory = (newItem) => {
     if (typeof window !== 'undefined') {
       const existingArray = localStorage.getItem('chatHistory');
@@ -69,7 +72,7 @@ const Layout = ({ index, children, thoughts, typeMessage }: LayoutProps) => {
       index = '0';
 
       const updateData = {
-        title: data.substring(0, 10) + '...',
+        title: data.substring(0, 20) + '...',
         message: [
           {
             sender: 'user',
@@ -101,8 +104,11 @@ const Layout = ({ index, children, thoughts, typeMessage }: LayoutProps) => {
       <div className="h-[calc(100vh-4rem)] grid grid-cols-12 mx-auto px-0 sm:px-0 md:px-5">
         <LeftSidebar selection={itemIndex} setSelection={setItemIndex} />
         <div className="h-[calc(100vh-4rem)] col-span-12 sm:col-span-12 md:col-span-7 bg-[#FAFAFA] rounded-xl ml-0 md:ml-2">
-          <div className="flex flex-col">
-            <div className="h-[calc(100vh-12rem)] overflow-y-scroll">{children}</div>
+          <div className="flex flex-col ">
+            <div className="h-[calc(100vh-12rem)] overflow-y-scroll">
+              {children}
+              <div ref={refEndMessage} />
+            </div>
             <SearchBar itemIndex={itemIndex} onSearch={handleMessage} />
           </div>
         </div>

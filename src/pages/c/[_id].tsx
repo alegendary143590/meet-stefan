@@ -4,11 +4,12 @@ import Layout from "../../components/Layout";
 import Conversation from "../../components/conversation";
 import HomeContent from "../../components/content/home";
 import NewchatContent from "../../components/content/new_chat";
-import { type } from "os";
+import { isFirefox } from "react-device-detect";
 
 const NewChat = () => {
 
   let [message, setMessage] = useState([]);
+  let isFirst = true;
   let [soulThoughts, setSoulThoughts] = useState(["HI", "If done"]);
   const router = useRouter();
 
@@ -23,6 +24,7 @@ const NewChat = () => {
   }
 
   
+  
   const query = router.query.text;
   let ContentComponent = Conversation;
 
@@ -34,7 +36,13 @@ const NewChat = () => {
       if (typeof window !== "undefined") {
         const chatHistory = localStorage.getItem("chatHistory");
         all_messages = JSON.parse(chatHistory);
-        const messages = all_messages[index].message;
+        message = all_messages[index].message;
+        if(message.length==1 && isFirst){
+          console.log("Successfuly >>>", message[0]);
+          isFirst = false;
+          handleMessage(message[0]);
+        }
+        
       }
       if (selectedIndex === "init") {
         ContentComponent = HomeContent;
@@ -49,6 +57,7 @@ const NewChat = () => {
   }, [index]);
 
   const handleMessage = async (data) => {
+    console.log("In handle L>L>>", data);
 
     if(typeof window != undefined){
       const storedData = localStorage.getItem('chatHistory');
@@ -57,11 +66,10 @@ const NewChat = () => {
       const thoughts = targetMessage.thoughts;
       const messages = targetMessage.message;
       console.log("Thoughts ..", thoughts);
-      console.log("Messages ..", messages);
-    
+      console.log("Messages ..", data);
       try {
 
-        // setMessage(preArray => [...preArray, data]);
+        setMessage(preArray => [...preArray, data]);
 
         console.log(data['message'], " is sent to backend!!");
         const query = data['message'];
@@ -74,7 +82,7 @@ const NewChat = () => {
           body: JSON.stringify({query}),
         });
 
-        if(res && res.body){
+        if(res && res.body && typeof window != undefined){
           let done = false;
           let chunks = [];
           const response = res.body.getReader();
@@ -95,9 +103,8 @@ const NewChat = () => {
               thoughts.push(value1);
               setSoulThoughts(preArray => [...preArray, value1]);
               localStorage.setItem('chatHistory', JSON.stringify(storedChatHistory));
-
-
             }
+            
             if(chunks.length==3){
               thoughts.push(`Stefan sent message : ${value1}`);
               setSoulThoughts(preArray => [...preArray, value1]);

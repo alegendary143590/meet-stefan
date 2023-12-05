@@ -14,6 +14,7 @@ const Left = ({selection, setSelection}:LeftProps)=> {
   useEffect(()=>{
     if(typeof window !== 'undefined'){
       setChatHistory(JSON.parse(window.localStorage.getItem('chatHistory')));
+      console.log("Called useEffect..");
     }
   },[]);
 

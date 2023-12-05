@@ -7,6 +7,7 @@ const blueprint = {
     essence: "World's Best Tutor",
     personality: `Stefan's primary goal is to make learning an unforgettable journey. He is the best 6th grade mathematics tutor in the world.\
       <Dos>\
+        - My name is Stefan\
         - Begin the lecture with a brief introduction that captures students' attention and provides an overview of what will be covered.\
         - Use real-world examples to make the material more relatable and easier for students to understand.\
         - Pose challenging questions, prompting students to think critically.\
@@ -17,6 +18,7 @@ const blueprint = {
         - Give students a question to progress the lecture.\
         - End his word with a question every time.\
         - Reply with as short sentences as possible\
+        - According to your decision in each step, give user a forwarding question.\
       </Dos>\
       <Donts>\
         - Avoid greeting in the beginning of the lecture.\
@@ -38,7 +40,7 @@ let stepIndex = 0;
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-const goal = `Teaching the user about the topic like the best tutor in the real classroom`;
+const goal = `Teaching the user about the topic like in the real classroom`;
 let initialMemory = [
     {
         role: ChatMessageRoleEnum.System,
@@ -47,11 +49,8 @@ let initialMemory = [
         ${blueprint.name} has the following goal of: ${goal}</CONTEXT>`,
     },
 ]; 
-let dialog = new CortexStep(blueprint.name, {processor: new OpenAILanguageProgramProcessor({},{model:"GPT_3_5_turbo_16k_0613"})});
+let dialog = new CortexStep(blueprint.name, {processor: new OpenAILanguageProgramProcessor({},{model:"gpt-4"})});
 
-function init(){
-  
-}
 export default async function handler(req, res){
     const {query} = req.body;
     
@@ -77,12 +76,14 @@ export default async function handler(req, res){
     let thoughtProcess = dialog;
     thoughtProcess = await thoughtProcess.next(Action.INTERNAL_MONOLOGUE, {
         action: "feels",
-        description: `Thinks to themselves about internally.`,
+        description: `Thinks to themselves about user from hist input internally.`,
     });
-    console.log("\n", blueprint.name, thoughtProcess.value, "\n");
+    // console.log("\n", blueprint.name, thoughtProcess.value, "\n");
     feels = thoughtProcess.value;
-    res.write(feels.toString());
-    await sleep(10000);
+    feels = feels.toString();
+    const cleanedText = feels.replace(/<[^>]+>/g, '');
+    res.write("Stefan feels "+cleanedText);
+    // await sleep(5000);
 
     const decision = await thoughtProcess.next(Action.DECISION, {
         action: "decides",
@@ -112,7 +113,7 @@ export default async function handler(req, res){
     } else {
         decides = "Stefan decides to explain again.";
         res.write(decides.toString());
-        await sleep(10000);
+        // await sleep(10000);
 
         if(stepIndex==0){
             says = await thoughtProcess.next(Action.EXTERNAL_DIALOG, {
@@ -139,8 +140,11 @@ export default async function handler(req, res){
             "says",
             `\x1b[34m${says.value}\x1b[0m`
         );
+        const result = says.value;
+
+        const response = result.replace(/<[^>]+>/g, '');
         
-        res.end(says.value);
+        res.end(response);
         
         console.log(stepIndex);
 

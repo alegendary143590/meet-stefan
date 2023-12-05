@@ -1,24 +1,30 @@
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Item from "./Item"
 
 const Right = ({ itemIndex, soulThoughts }) => {
 
   let thoughts = [];
-
+  const soulMessagesEndRef = useRef(null);
   try {
-    const storedData = localStorage.getItem('chatHistory');
-    let storedChatHistory = JSON.parse(storedData);
-    const targetMessage = storedChatHistory[itemIndex];
-    thoughts = targetMessage.thoughts;
+    if(typeof window!== undefined) {
+      const storedData = localStorage.getItem('chatHistory');
+      let storedChatHistory = JSON.parse(storedData);
+      const targetMessage = storedChatHistory[itemIndex];
+      thoughts = targetMessage.thoughts;
+    }
   } catch (err) {
     thoughts = [];
   }
 
+  const scrollToBottomThoughts = () => {
+    soulMessagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() =>
     {
-
-    }, [soulThoughts]
+      scrollToBottomThoughts();
+    }, [thoughts]
   )
 
   const bgColors = ["bg-[#E2F1EB]", "bg-[#DAE8F3]", "bg-[#FEE7E3]"];
@@ -35,6 +41,7 @@ const Right = ({ itemIndex, soulThoughts }) => {
             thoughts.map((item, index) => <Item key={index} bg={bgColors[(++index) % 3]} title={item} />)
           }
         </ul>
+        <div ref={soulMessagesEndRef} />
       </div>
     </div>
   )

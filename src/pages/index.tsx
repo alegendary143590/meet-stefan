@@ -6,21 +6,7 @@ import { useRouter } from "next/router";
 
 const Home = () => {
   const [selectedIndex, setSelectedIndex] = useState('init');
-  const [chatHistory, setChatHistory] = useState([
-    {
-      title: "Item... ",
-      message: [
-        {
-          sender: "user",
-          message: "Hi"
-        }
-      ],
-      thoughts: [
-        "Stefan gets excited a lot.",
-        "Stefan feels bored!"
-      ]
-    }
-  ]);
+  const [chatHistory, setChatHistory] = useState([]);
 
   if (typeof window !== 'undefined') {
     // Perform localStorage action
